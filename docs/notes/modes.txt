@@ -1,0 +1,22 @@
+Addressing Modes
+----------------
+
+Immediate                   ADC #$A5        69 A5
+Accumulator                 ROL A           2A
+Zero Page                   ADC $40         65 40
+Zero Page X                 ADC $5E,X       75 5E
+Zero Page Y                 LDX $62,Y       B6 62
+Absolute                    ADC $AD12       6D 12 AD
+Absolute X                  ADC $AD12,X     7D 12 AD
+Absolute Y                  ADC $AD12,Y     79 12 AD
+Implied                     CLC             18
+Relative                    BCC *-12        90 F2
+Indirect X                  ADC ($1E,X)     61 1E
+Indirect Y                  ADC ($1E),Y     71 1E
+Indirect Absolute           JMP ($1400)     6C 00 14
+Zero Page Indirect          JMP ($45)       B2 45
+Special Page                JMP \$FFC0      22 C0
+Zero Page Bit               CLB 5,$44       BF 44
+Accumulator Bit             CLB 5,A         BB
+Accumulator Bit Relative    BBC 5,A,*-12    B3 F2
+Zero Page Bit Relative      BBC 5,$04,*-12  B7 04 F1
