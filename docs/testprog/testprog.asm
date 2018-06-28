@@ -19,7 +19,7 @@ label1:
     adc [0xaa],y        ;71 aa      Indirect Y
     jmp [0xaabb]        ;6c bb aa   Indirect Absolute
     jmp [0xaa]          ;b2 aa      Zero Page Indirect
-    ;jmp \ffc0           ;22 c0      Special Page         TODO assembly error
+    jsr \0xffaa         ;22         Special Page
     clb 5,0xaa          ;bf aa      Zero Page Bit
     clb 5,A             ;bb         Accumulator Bit
 label2:
@@ -69,7 +69,7 @@ label8:
     clb 0,0xaa          ;1f aa      Zero Page Bit
     jsr 0xaabb          ;20 bb aa   Absolute
     and [0xaa,x]        ;21 aa      Indirect X
-    .byte 0x22          ;22         Special Page        TODO fix assembly
+    jsr \0xffaa         ;22         Special Page
 label9:
     bbs 1,a,label9      ;23 fe      Zero Page Bit Relative
     bit 0xaa            ;24 aa      Zero Page
