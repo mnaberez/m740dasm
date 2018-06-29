@@ -133,7 +133,7 @@ label17:
     lsr 0xaa,x          ;56 aa      Zero Page X
 label18:
     bbc 2,0xaa,label18  ;57 aa fd   Zero Page Bit Relative
-    cli                 ;58         Inherent
+    cli                 ;58         Implied
     eor 0xaabb,y        ;59 bb aa   Absolute Y
     .byte 0x5a          ;5a         Illegal
     clb 2,a             ;5b         Accumulator Bit
@@ -173,7 +173,7 @@ label23:
     sei                 ;78         Implied
     adc 0xaabb,y        ;79 bb aa   Absolute Y
     .byte 0x7a          ;7a         Illegal
-    clb 3,a             ;7b bb aa   Accumulator Bit
+    clb 3,a             ;7b         Accumulator Bit                 
     .byte 0x7c          ;7c         Illegal
     adc 0xaabb,x        ;7d bb aa   Absolute X
     ror 0xaabb,x        ;7e bb aa   Absolute X
