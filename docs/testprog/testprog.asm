@@ -78,7 +78,7 @@ label9:
 label10:
     bbs 1,0xaa,label10  ;27 aa fd   Zero Page Bit Relative
     plp                 ;28         Implied
-    and #0xaa           ;29         Immediate
+    and #0xaa           ;29 aa      Immediate
     rol a               ;2a         Implied
     seb 1,a             ;2b         Accumulator Bit
     bit 0xaabb          ;2c bb aa   Absolute
@@ -193,9 +193,9 @@ label26:
     .byte 0x89          ;89         Illegal
     txa                 ;8a         Implied
     seb 4,a             ;8b         Accumulator Bit
-    sty 0xaabb          ;8c bb aa   Accumulator
-    sta 0xaabb          ;8d bb aa   Accumulator
-    stx 0xaabb          ;8e bb aa   Accumulator
+    sty 0xaabb          ;8c bb aa   Absolute
+    sta 0xaabb          ;8d bb aa   Absolute
+    stx 0xaabb          ;8e bb aa   Absolute
     seb 4,0xaa          ;8f aa      Zero Page Bit
 label27:
     bcc label27         ;90 fe      Relative

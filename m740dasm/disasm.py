@@ -7,13 +7,14 @@ from m740dasm.tables import (
 
 class Instruction(object):
     __slots__ = ('disasm_template', 'addr_mode', 'opcode', 'operands',
-                 'zp_addr', 'immediate', 'abs_addr')
+                 'zp_addr', 'immediate', 'abs_addr', 'sp_addr')
 
     def __init__(self, **kwargs):
         self.disasm_template = '' # "cmp @ix+IXD, #IMB"
         self.addr_mode = None     # addressing mode
         self.zp_addr = None       # zero page address
         self.abs_addr = None      # absolute address
+        self.sp_addr = None       # special page address
         self.immediate = None     # immediate value
         self.opcode = None        # opcode byte
         self.operands = ()        # operand bytes
@@ -39,6 +40,7 @@ class Instruction(object):
     _disasm_formats = (
         ('opcode',    '{opc}', '0x%02x'),
         ('zp_addr',   '{zp}',  '0x%02x'),
+        ('sp_addr',   '{sp}',  '0xff%02x'),
         ('abs_addr',  '{abs}', '0x%04x'),
         ('immediate', '{imm}', '0x%02x'),
         )
@@ -61,32 +63,35 @@ def disassemble_inst(memory, pc):
         operands=operands,
         )
 
-    if inst.addr_mode == AddressModes.Illegal:
+    if inst.addr_mode in (AddressModes.Illegal,
+                          AddressModes.Implied,
+                          AddressModes.AccumulatorBit):
         pass
-    elif inst.addr_mode == AddressModes.Implied:
-        pass
-    elif inst.addr_mode == AddressModes.Absolute:
+
+    elif inst.addr_mode in (AddressModes.Absolute,
+                            AddressModes.AbsoluteX,
+                            AddressModes.AbsoluteY):
         inst.abs_addr = operands[0] + (operands[1] << 8)
-    elif inst.addr_mode == AddressModes.AbsoluteX:
         inst.abs_addr = operands[0] + (operands[1] << 8)
-    elif inst.addr_mode == AddressModes.AbsoluteY:
-        inst.abs_addr = operands[0] + (operands[1] << 8)
-    elif inst.addr_mode == AddressModes.AccumulatorBit:
-        pass
+
     elif inst.addr_mode == AddressModes.Immediate:
         inst.immediate = operands[0]
-    elif inst.addr_mode == AddressModes.IndirectX:
+
+    elif inst.addr_mode in (AddressModes.IndirectX,
+                            AddressModes.ZeroPageIndirect,
+                            AddressModes.ZeroPage,
+                            AddressModes.ZeroPageBit,
+                            AddressModes.ZeroPageX,
+                            AddressModes.IndirectY):
         inst.zp_addr = operands[0]
-    elif inst.addr_mode == AddressModes.ZeroPageIndirect:
-        inst.zp_addr = operands[0]
-    elif inst.addr_mode == AddressModes.ZeroPage:
-        inst.zp_addr = operands[0]
-    elif inst.addr_mode == AddressModes.ZeroPageBit:
-        inst.zp_addr = operands[0]
-    elif inst.addr_mode == AddressModes.ZeroPageX:
-        inst.zp_addr = operands[0]
-    elif inst.addr_mode == AddressModes.IndirectY:
-        inst.zp_addr = operands[0]
+
+    elif inst.addr_mode == AddressModes.ZeroPageImmediate:
+        inst.immediate = operands[0]
+        inst.zp_addr = operands[1]
+
+    elif inst.addr_mode == AddressModes.SpecialPage:
+        inst.sp_addr = operands[0]
+
     else:
         msg = "Unhandled addressing mode %r at 0x%04x" % (
             inst.addr_mode, pc-1)

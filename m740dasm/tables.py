@@ -223,7 +223,7 @@ Opcodes = (
           ),
     # jsr \0xffaa         ;22         Special Page
     Opcode(number=0x22,
-           disasm_template="jsr \\0xffaa",
+           disasm_template="jsr \\{sp}",
            addr_mode=AddressModes.SpecialPage,
           ),
     # bbs 1,a,label9      ;23 fe      Zero Page Bit Relative
@@ -233,22 +233,22 @@ Opcodes = (
           ),
     # bit 0xaa            ;24 aa      Zero Page
     Opcode(number=0x24,
-           disasm_template="bit 0xaa",
+           disasm_template="bit {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # and 0xaa            ;25 aa      Zero Page
     Opcode(number=0x25,
-           disasm_template="and 0xaa",
+           disasm_template="and {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # rol 0xaa            ;26 aa      Zero Page
     Opcode(number=0x26,
-           disasm_template="rol 0xaa",
+           disasm_template="rol {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 1,0xaa,label10  ;27 aa fd   Zero Page Bit Relative
     Opcode(number=0x27,
-           disasm_template="bbs 1,0xaa,label10",
+           disasm_template="bbs 1,{zp},label10",
            addr_mode=AddressModes.ZeroPage,
           ),
     # plp                 ;28         Implied
@@ -256,9 +256,9 @@ Opcodes = (
            disasm_template="plp",
            addr_mode=AddressModes.Implied,
           ),
-    # and #0xaa           ;29         Immediate
+    # and #0xaa           ;29 aa      Immediate
     Opcode(number=0x29,
-           disasm_template="and #0xaa",
+           disasm_template="and #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # rol a               ;2a         Implied
@@ -273,22 +273,22 @@ Opcodes = (
           ),
     # bit 0xaabb          ;2c bb aa   Absolute
     Opcode(number=0x2c,
-           disasm_template="bit 0xaabb",
+           disasm_template="bit {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # and 0xaabb          ;2d bb aa   Absolute
     Opcode(number=0x2d,
-           disasm_template="and 0xaabb",
+           disasm_template="and {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # rol 0xaabb          ;2e bb aa   Absolute
     Opcode(number=0x2e,
-           disasm_template="rol 0xaabb",
+           disasm_template="rol {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # seb 1,0xaa          ;2f aa      Zero Page Bit
     Opcode(number=0x2f,
-           disasm_template="seb 1,0xaa",
+           disasm_template="seb 1,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bmi label11         ;30 fe      Relative
@@ -298,7 +298,7 @@ Opcodes = (
           ),
     # and [0xaa],y        ;31 aa      Indirect Y
     Opcode(number=0x31,
-           disasm_template="and [0xaa],y",
+           disasm_template="and [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # set                 ;32         Implied
@@ -313,22 +313,22 @@ Opcodes = (
           ),
     # .byte 0x34          ;34 00      Illegal
     Opcode(number=0x34,
-           disasm_template=".byte 0x34",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # and 0xaa,x          ;35 aa      Zero Page X
     Opcode(number=0x35,
-           disasm_template="and 0xaa,x",
+           disasm_template="and {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # rol 0xaa,x          ;36 aa      Zero Page X
     Opcode(number=0x36,
-           disasm_template="rol 0xaa,x",
+           disasm_template="rol {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # bbc 1,0xaa,label13  ;37 aa fd   Zero Page Bit Relative
     Opcode(number=0x37,
-           disasm_template="bbc 1,0xaa,label13",
+           disasm_template="bbc 1,{zp},label13",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # sec                 ;38         Implied
@@ -338,7 +338,7 @@ Opcodes = (
           ),
     # and 0xaabb,y        ;39 bb aa   Absolute Y
     Opcode(number=0x39,
-           disasm_template="and 0xaabb,y",
+           disasm_template="and {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # inc a               ;3a         Implied
@@ -353,22 +353,22 @@ Opcodes = (
           ),
     # ldm #0xaa,0xbb      ;3c aa bb   Zero Page Immediate
     Opcode(number=0x3c,
-           disasm_template="ldm #0xaa,0xbb",
+           disasm_template="ldm #{imm},{zp}",
            addr_mode=AddressModes.ZeroPageImmediate,
           ),
     # and 0xaabb,x        ;3d bb aa   Absolute X
     Opcode(number=0x3d,
-           disasm_template="and 0xaabb,x",
+           disasm_template="and {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # rol 0xaabb,x        ;3e bb aa   Absolute X
     Opcode(number=0x3e,
-           disasm_template="rol 0xaabb,x",
+           disasm_template="rol {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # clb 1,0xaa          ;3f aa      Zero Page Bit
     Opcode(number=0x3f,
-           disasm_template="clb 1,0xaa",
+           disasm_template="clb 1,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # rti                 ;40         Implied
@@ -378,7 +378,7 @@ Opcodes = (
           ),
     # eor [0xaa,x]        ;41 aa      Indirect X
     Opcode(number=0x41,
-           disasm_template="eor [0xaa,x]",
+           disasm_template="eor [{zp},x]",
            addr_mode=AddressModes.IndirectX,
           ),
     # stp                 ;42         Implied
@@ -393,22 +393,22 @@ Opcodes = (
           ),
     # com 0xaa            ;44 aa      Zero Page
     Opcode(number=0x44,
-           disasm_template="com 0xaa",
+           disasm_template="com {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # eor 0xaa            ;45 aa      Zero Page
     Opcode(number=0x45,
-           disasm_template="eor 0xaa",
+           disasm_template="eor {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # lsr 0xaa            ;46 aa      Zero Page
     Opcode(number=0x46,
-           disasm_template="lsr 0xaa",
+           disasm_template="lsr {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 2,0xaa,label15  ;47 aa fd   Zero Page Bit Relative
     Opcode(number=0x47,
-           disasm_template="bbs 2,0xaa,label15",
+           disasm_template="bbs 2,{zp},label15",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # pha                 ;48         Implied
@@ -418,7 +418,7 @@ Opcodes = (
           ),
     # eor #0xaa           ;49 aa      Immediate
     Opcode(number=0x49,
-           disasm_template="eor #0xaa",
+           disasm_template="eor #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # lsr a               ;4a         Implied
@@ -433,22 +433,22 @@ Opcodes = (
           ),
     # jmp 0xaabb          ;4c bb aa   Absolute
     Opcode(number=0x4c,
-           disasm_template="jmp 0xaabb",
+           disasm_template="jmp {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # eor 0xaabb          ;4d bb aa   Absolute
     Opcode(number=0x4d,
-           disasm_template="eor 0xaabb",
+           disasm_template="eor {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # lsr 0xaabb          ;4e bb aa   Absolute
     Opcode(number=0x4e,
-           disasm_template="lsr 0xaabb",
+           disasm_template="lsr {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # seb 2,0xaa          ;4f aa      Zero Page Bit
     Opcode(number=0x4f,
-           disasm_template="seb 2,0xaa",
+           disasm_template="seb 2,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bvc label16         ;50 fe      Relative
@@ -458,12 +458,12 @@ Opcodes = (
           ),
     # eor [0xaa],y        ;51 aa      Indirect Y
     Opcode(number=0x51,
-           disasm_template="eor [0xaa],y",
+           disasm_template="eor {zp},y",
            addr_mode=AddressModes.IndirectY,
           ),
     # .byte 0x52          ;52         Illegal
     Opcode(number=0x52,
-           disasm_template=".byte 0x52",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # bbc 2,a,label17     ;53 fe      Accumulator Bit Relative
@@ -473,22 +473,22 @@ Opcodes = (
           ),
     # .byte 0x54          ;54         Illegal
     Opcode(number=0x54,
-           disasm_template=".byte 0x54",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # eor 0xaa,x          ;55 aa      Zero Page X
     Opcode(number=0x55,
-           disasm_template="eor 0xaa,x",
+           disasm_template="eor {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # lsr 0xaa,x          ;56 aa      Zero Page X
     Opcode(number=0x56,
-           disasm_template="lsr 0xaa,x",
+           disasm_template="lsr {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # bbc 2,0xaa,label18  ;57 aa fd   Zero Page Bit Relative
     Opcode(number=0x57,
-           disasm_template="bbc 2,0xaa,label18",
+           disasm_template="bbc 2,{zp},label18",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # cli                 ;58         Implied
@@ -498,12 +498,12 @@ Opcodes = (
           ),
     # eor 0xaabb,y        ;59 bb aa   Absolute Y
     Opcode(number=0x59,
-           disasm_template="eor 0xaabb,y",
+           disasm_template="eor {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # .byte 0x5a          ;5a         Illegal
     Opcode(number=0x5a,
-           disasm_template=".byte 0x5a",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # clb 2,a             ;5b         Accumulator Bit
@@ -513,37 +513,37 @@ Opcodes = (
           ),
     # .byte 0x5c          ;5c         Illegal
     Opcode(number=0x5c,
-           disasm_template=".byte 0x5c",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # eor 0xaabb,x        ;5d bb aa   Absolute X
     Opcode(number=0x5d,
-           disasm_template="eor 0xaabb,x",
+           disasm_template="eor {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # lsr 0xaabb,x        ;5e bb aa   Absolute X
     Opcode(number=0x5e,
-           disasm_template="lsr 0xaabb,x",
+           disasm_template="lsr {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # clb 2,0xaa          ;5f aa      Zero Page Bit
     Opcode(number=0x5f,
-           disasm_template="clb 2,0xaa",
+           disasm_template="clb 2,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # rts                 ;60         Implied
     Opcode(number=0x60,
-           disasm_template="clb 2,0xaa",
+           disasm_template="clb 2,{zp}",
            addr_mode=AddressModes.Implied,
           ),
     # adc [0xaa,x]        ;61 aa      Indirect X
     Opcode(number=0x61,
-           disasm_template="adc [0xaa,x]",
+           disasm_template="adc [{zp},x]",
            addr_mode=AddressModes.IndirectX,
           ),
     # mul 0xaa,x          ;62 aa      Zero Page X
     Opcode(number=0x62,
-           disasm_template="mul 0xaa,x",
+           disasm_template="mul {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # bbs 3,a,label19     ;63 fe      Accumulator Bit Relative
@@ -553,22 +553,22 @@ Opcodes = (
           ),
     # tst 0xaa            ;64 aa      Zero Page
     Opcode(number=0x64,
-           disasm_template="tst 0xaa",
+           disasm_template="tst {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # adc 0xaa            ;65 aa      Zero Page
     Opcode(number=0x65,
-           disasm_template="adc 0xaa",
+           disasm_template="adc {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # ror 0xaa            ;66 aa      Zero Page
     Opcode(number=0x66,
-           disasm_template="ror 0xaa",
+           disasm_template="ror {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 3,0xaa,label20  ;67 aa fd   Zero Page Bit Relative
     Opcode(number=0x67,
-           disasm_template="bbs 3,0xaa,label20",
+           disasm_template="bbs 3,{zp},label20",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # pla                 ;68         Implied
@@ -578,7 +578,7 @@ Opcodes = (
           ),
     # adc #0xaa           ;69 aa      Immediate
     Opcode(number=0x69,
-           disasm_template="adc #0xaa",
+           disasm_template="adc #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # ror a               ;6a         Implied
@@ -593,22 +593,22 @@ Opcodes = (
           ),
     # jmp [0xaabb]        ;6c bb aa   Indirect Absolute
     Opcode(number=0x6c,
-           disasm_template="jmp [0xaabb]",
+           disasm_template="jmp [{abs}]",
            addr_mode=AddressModes.IndirectAbsolute,
           ),
     # adc 0xaabb          ;6d bb aa   Absolute
     Opcode(number=0x6d,
-           disasm_template="adc 0xaabb",
+           disasm_template="adc {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # ror 0xaabb          ;6e bb aa   Absolute
     Opcode(number=0x6e,
-           disasm_template="ror 0xaabb",
+           disasm_template="ror {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # seb 3,0xaa          ;6f aa      Zero Page Bit
     Opcode(number=0x6f,
-           disasm_template="seb 3,0xaa",
+           disasm_template="seb 3,{abs}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bvs label21         ;70 fe      Relative
@@ -618,12 +618,12 @@ Opcodes = (
           ),
     # adc [0xaa],y        ;71 aa      Indirect Y
     Opcode(number=0x71,
-           disasm_template="adc [0xaa],y",
+           disasm_template="adc [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # .byte 0x72          ;72         Illegal
     Opcode(number=0x72,
-           disasm_template=".byte 72",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # bbc 3,a,label22     ;73 fe      Accumulator Bit Relative
@@ -633,22 +633,22 @@ Opcodes = (
           ),
     # .byte 0x74          ;74         Illegal
     Opcode(number=0x74,
-           disasm_template=".byte 0x74",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # adc 0xaa,x          ;75 aa      Zero Page X
     Opcode(number=0x75,
-           disasm_template="adc 0xaa,x",
+           disasm_template="adc {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # ror 0xaa,x          ;76 aa      Zero Page X
     Opcode(number=0x76,
-           disasm_template="ror 0xaa,x",
+           disasm_template="ror {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # bbc 3,0xaa,label23  ;77 aa fd   Zero Page Bit Relative
     Opcode(number=0x77,
-           disasm_template="bbc 3,0xaa,label23",
+           disasm_template="bbc 3,{zp},label23",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # sei                 ;78         Implied
@@ -658,12 +658,12 @@ Opcodes = (
           ),
     # adc 0xaabb,y        ;79 bb aa   Absolute Y
     Opcode(number=0x79,
-           disasm_template="adc 0xaabb,y",
+           disasm_template="adc {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # .byte 0x7a          ;7a         Illegal
     Opcode(number=0x7a,
-           disasm_template=".byte 0x7a",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # clb 3,a             ;7b         Accumulator Bit
@@ -673,22 +673,22 @@ Opcodes = (
           ),
     # .byte 0x7c          ;7c         Illegal
     Opcode(number=0x7c,
-           disasm_template=".byte 0x7c",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # adc 0xaabb,x        ;7d bb aa   Absolute X
     Opcode(number=0x7d,
-           disasm_template="adc 0xaabb,x",
+           disasm_template="adc {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # ror 0xaabb,x        ;7e bb aa   Absolute X
     Opcode(number=0x7e,
-           disasm_template="ror 0xaabb,x",
+           disasm_template="ror {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # clb 3,0xaa          ;7f aa      Zero Page Bit
     Opcode(number=0x7f,
-           disasm_template="clb 3,0xaa",
+           disasm_template="clb 3,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bra label24         ;80 fe      Relative
@@ -698,12 +698,12 @@ Opcodes = (
           ),
     # sta [0xaa,x]        ;81 aa      Indirect X
     Opcode(number=0x81,
-           disasm_template="sta [0xaa,x]",
+           disasm_template="sta [{zp},x]",
            addr_mode=AddressModes.IndirectX,
           ),
     # rrf 0xaa            ;82 aa      Zero Page
     Opcode(number=0x82,
-           disasm_template="rrf 0xaa",
+           disasm_template="rrf {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 4,a,label25     ;83 fe      Accumulator Bit Relative
@@ -713,22 +713,22 @@ Opcodes = (
           ),
     # sty 0xaa            ;84 aa      Zero Page
     Opcode(number=0x84,
-           disasm_template="sty 0xaa",
+           disasm_template="sty {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # sta 0xaa            ;85 aa      Zero Page
     Opcode(number=0x85,
-           disasm_template="sta 0xaa",
+           disasm_template="sta {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # stx 0xaa            ;86 aa      Zero Page
     Opcode(number=0x86,
-           disasm_template="stx 0xaa",
+           disasm_template="stx {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 4,0xaa,label26  ;87 aa fd   Zero Page Bit Relative
     Opcode(number=0x87,
-           disasm_template="bbs 4,0xaa,label26",
+           disasm_template="bbs 4,{zp},label26",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # dey                 ;88         Implied
@@ -738,7 +738,7 @@ Opcodes = (
           ),
     # .byte 0x89          ;89         Illegal
     Opcode(number=0x89,
-           disasm_template=".byte 0x89",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # txa                 ;8a         Implied
@@ -751,24 +751,24 @@ Opcodes = (
            disasm_template="seb 4,a",
            addr_mode=AddressModes.AccumulatorBit,
           ),
-    # sty 0xaabb          ;8c bb aa   Accumulator
+    # sty 0xaabb          ;8c bb aa   Absolute
     Opcode(number=0x8c,
-           disasm_template="sty 0xaabb",
-           addr_mode=AddressModes.Accumulator,
+           disasm_template="sty {abs}",
+           addr_mode=AddressModes.Absolute,
           ),
-    # sta 0xaabb          ;8d bb aa   Accumulator
+    # sta 0xaabb          ;8d bb aa   Absolute
     Opcode(number=0x8d,
-           disasm_template="sta 0xaabb",
-           addr_mode=AddressModes.Accumulator,
+           disasm_template="sta {abs}",
+           addr_mode=AddressModes.Absolute,
           ),
-    # stx 0xaabb          ;8e bb aa   Accumulator
+    # stx 0xaabb          ;8e bb aa   Absolute
     Opcode(number=0x8e,
            disasm_template="stx 0xaabb",
-           addr_mode=AddressModes.Accumulator,
+           addr_mode=AddressModes.Absolute,
           ),
     # seb 4,0xaa          ;8f aa      Zero Page Bit
     Opcode(number=0x8f,
-           disasm_template="seb 4,0xaa",
+           disasm_template="seb 4,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bcc label27         ;90 fe      Relative
@@ -778,12 +778,12 @@ Opcodes = (
           ),
     # sta [0xaa],y        ;91 aa      Indirect Y
     Opcode(number=0x91,
-           disasm_template="sta [0xaa],y",
+           disasm_template="sta [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # .byte 0x92          ;92         Illegal
     Opcode(number=0x92,
-           disasm_template=".byte 0x92",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # bbc 4,a,label28     ;93 fe      Accumulator Bit Relative
@@ -793,22 +793,22 @@ Opcodes = (
           ),
     # sty 0xaa,x          ;94 aa      Zero Page X
     Opcode(number=0x94,
-           disasm_template="sty 0xaa,x",
+           disasm_template="sty {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # sta 0xaa,x          ;95 aa      Zero Page X
     Opcode(number=0x95,
-           disasm_template="sta 0xaa,x",
+           disasm_template="sta {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # stx 0xaa,y          ;96 aa      Zero Page Y
     Opcode(number=0x96,
-           disasm_template="stx 0xaa,y",
+           disasm_template="stx {zp},y",
            addr_mode=AddressModes.ZeroPageY,
           ),
     # bbc 4,0xaa,label29  ;97 aa fd   Zero Page Bit Relative
     Opcode(number=0x97,
-           disasm_template="bbc 4,0xaa,label29",
+           disasm_template="bbc 4,{zp},label29",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # tya                 ;98         Implied
@@ -818,7 +818,7 @@ Opcodes = (
           ),
     # sta 0xaabb,y        ;99 bb aa   Absolute Y
     Opcode(number=0x99,
-           disasm_template="sta 0xaabb,y",
+           disasm_template="sta {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # txs                 ;9a         Implied
@@ -833,37 +833,37 @@ Opcodes = (
           ),
     # .byte 0x9c          ;9c         Illegal
     Opcode(number=0x9c,
-           disasm_template=".byte 0x9c",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # sta 0xaabb,x        ;9d bb aa   Absolute X
     Opcode(number=0x9d,
-           disasm_template="sta 0xaabb,x",
+           disasm_template="sta {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # .byte 0x9e          ;9e         Illegal
     Opcode(number=0x9e,
-           disasm_template=".byte 0x9e",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # clb 4,0xaa          ;9f aa      Zero Page Bit
     Opcode(number=0x9f,
-           disasm_template="clb 4,0xaa",
+           disasm_template="clb 4,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # ldy #0xaa           ;a0 aa      Immediate
     Opcode(number=0xa0,
-           disasm_template="ldy #0xaa",
+           disasm_template="ldy #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # lda [0xaa,x]        ;a1 aa      Indirect X
     Opcode(number=0xa1,
-           disasm_template="lda [0xaa,x]",
+           disasm_template="lda [{zp},x]",
            addr_mode=AddressModes.IndirectX,
           ),
     # ldx #0xaa           ;a2 aa      Immediate
     Opcode(number=0xa2,
-           disasm_template="ldx #0xaa",
+           disasm_template="ldx #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # bbs 5,a,label30     ;a3 fe      Accumulator Bit Relative
@@ -873,22 +873,22 @@ Opcodes = (
           ),
     # ldy 0xaa            ;a4 aa      Zero Page
     Opcode(number=0xa4,
-           disasm_template="ldy 0xaa",
+           disasm_template="ldy {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # lda 0xaa            ;a5 aa      Zero Page
     Opcode(number=0xa5,
-           disasm_template="lda 0xaa",
+           disasm_template="lda {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # ldx 0xaa            ;a6 aa      Zero Page
     Opcode(number=0xa6,
-           disasm_template="ldx 0xaa",
+           disasm_template="ldx {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 5,0xaa,label31  ;a7 aa fd   Accumulator Bit Relative
     Opcode(number=0xa7,
-           disasm_template="bbs 5,0xaa,label31",
+           disasm_template="bbs 5,{zp},label31",
            addr_mode=AddressModes. AccumulatorBitRelative,
           ),
     # tay                 ;a8         Implied
@@ -898,7 +898,7 @@ Opcodes = (
           ),
     # lda #0xaa           ;a9 aa      Immediate
     Opcode(number=0xa9,
-           disasm_template="lda #0xaa",
+           disasm_template="lda #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # tax                 ;aa         Implied
@@ -913,22 +913,22 @@ Opcodes = (
           ),
     # ldy 0xaabb          ;ac bb aa   Absolute
     Opcode(number=0xac,
-           disasm_template="ldy 0xaabb",
+           disasm_template="ldy {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # lda 0xaabb          ;ad bb aa   Absolute
     Opcode(number=0xad,
-           disasm_template="lda 0xaabb",
+           disasm_template="lda {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # ldx 0xaabb          ;ae bb aa   Absolute
     Opcode(number=0xae,
-           disasm_template="ldx 0xaabb",
+           disasm_template="ldx {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # seb 5,0xaa          ;af aa      Zero Page Bit
     Opcode(number=0xaf,
-           disasm_template="seb 5,0xaa",
+           disasm_template="seb 5,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bcs label32         ;b0 fe      Relative
@@ -938,12 +938,12 @@ Opcodes = (
           ),
     # lda [0xaa],y        ;b1 aa      Indirect Y
     Opcode(number=0xb1,
-           disasm_template="lda [0xaa],y",
+           disasm_template="lda [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # jmp [0xaa]          ;b2 aa      Zero Page Indirect
     Opcode(number=0xb2,
-           disasm_template="jmp [0xaa]",
+           disasm_template="jmp [{zp}]",
            addr_mode=AddressModes.ZeroPageIndirect,
           ),
     # bbc 5,a,label33     ;b3 fe      Accumulator Bit Relative
@@ -953,22 +953,22 @@ Opcodes = (
           ),
     # ldy 0xaa,x          ;b4 aa      Zero Page X
     Opcode(number=0xb4,
-           disasm_template="ldy 0xaa,x",
+           disasm_template="ldy {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # lda 0xaa,x          ;b5 aa      Zero Page X
     Opcode(number=0xb5,
-           disasm_template="lda 0xaa,x",
+           disasm_template="lda {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # ldx 0xaa,y          ;b6 aa      Zero Page Y
     Opcode(number=0xb6,
-           disasm_template="ldx 0xaa,y",
+           disasm_template="ldx {zp},y",
            addr_mode=AddressModes.ZeroPageY,
           ),
     # bbc 5,0xaa,label34  ;b7 aa fd   Zero Page Bit Relative
     Opcode(number=0xb7,
-           disasm_template="bbc 5,0xaa,label34",
+           disasm_template="bbc 5,{zp},label34",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # clv                 ;b8         Implied
@@ -978,7 +978,7 @@ Opcodes = (
           ),
     # lda 0xaabb,y        ;b9 bb aa   Absolute Y
     Opcode(number=0xb9,
-           disasm_template="lda 0xaabb,y",
+           disasm_template="lda {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # tsx                 ;ba         Implied
@@ -993,32 +993,32 @@ Opcodes = (
           ),
     # ldy 0xaabb,x        ;bc bb aa   Absolute X
     Opcode(number=0xbc,
-           disasm_template="ldy 0xaabb,x",
+           disasm_template="ldy {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # lda 0xaabb,x        ;bd bb aa   Absolute X
     Opcode(number=0xbd,
-           disasm_template="lda 0xaabb,x",
+           disasm_template="lda {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # ldx 0xaabb,y        ;be bb aa   Absolute Y
     Opcode(number=0xbe,
-           disasm_template="ldx 0xaabb,y",
+           disasm_template="ldx {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # clb 5,0xaa          ;bf aa      Zero Page Bit
     Opcode(number=0xbf,
-           disasm_template="clb 5,0xaa",
+           disasm_template="clb 5,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # cpy #0xaa           ;c0 aa      Immediate
     Opcode(number=0xc0,
-           disasm_template="cpy #0xaa",
+           disasm_template="cpy #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # cmp [0xaa,x]        ;c1 aa      Indirect X
     Opcode(number=0xc1,
-           disasm_template="cmp [0xaa,x]",
+           disasm_template="cmp [{zp},x]",
            addr_mode=AddressModes.IndirectX,
           ),
     # wit                 ;c2         Implied
@@ -1033,22 +1033,22 @@ Opcodes = (
           ),
     # cpy 0xaa            ;c4 aa      Zero Page
     Opcode(number=0xc4,
-           disasm_template="cpy 0xaa",
+           disasm_template="cpy {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # cmp 0xaa            ;c5 aa      Zero Page
     Opcode(number=0xc5,
-           disasm_template="cmp 0xaa",
+           disasm_template="cmp {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # dec 0xaa            ;c6 aa      Zero Page
     Opcode(number=0xc6,
-           disasm_template="dec 0xaa",
+           disasm_template="dec {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
     # bbs 6,0xaa,label36  ;c7 aa fd   Zero Page Bit Relative
     Opcode(number=0xc7,
-           disasm_template="bbs 6,0xaa,label36",
+           disasm_template="bbs 6,{zp},label36",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # iny                 ;c8         Implied
@@ -1058,7 +1058,7 @@ Opcodes = (
           ),
     # cmp #0xaa           ;c9 aa      Immediate
     Opcode(number=0xc9,
-           disasm_template="cmp #0xaa",
+           disasm_template="cmp #{imm}",
            addr_mode=AddressModes.Immediate,
           ),
     # dex                 ;ca         Implied
@@ -1073,22 +1073,22 @@ Opcodes = (
           ),
     # cpy 0xaabb          ;cc bb aa   Absolute
     Opcode(number=0xcc,
-           disasm_template="cpy 0xaabb",
+           disasm_template="cpy {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # cmp 0xaabb          ;cd bb aa   Absolute
     Opcode(number=0xcd,
-           disasm_template="cmp 0xaabb",
+           disasm_template="cmp {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # dec 0xaabb          ;ce bb aa   Absolute
     Opcode(number=0xce,
-           disasm_template="dec 0xaabb",
+           disasm_template="dec {abs}",
            addr_mode=AddressModes.Absolute,
           ),
     # seb 6,0xaa          ;cf aa      Zero Page Bit
     Opcode(number=0xcf,
-           disasm_template="seb 6,0xaa",
+           disasm_template="seb 6,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bne label37         ;d0 fe      Relative
@@ -1098,12 +1098,12 @@ Opcodes = (
           ),
     # cmp [0xaa],y        ;d1 aa      Indirect Y
     Opcode(number=0xd1,
-           disasm_template="cmp [0xaa],y",
+           disasm_template="cmp [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # .byte 0xd2          ;d2         Illegal
     Opcode(number=0xd2,
-           disasm_template=".byte 0xd2",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # bbc 6,a,label38     ;d3 fe      Accumulator Bit Relative
@@ -1113,22 +1113,22 @@ Opcodes = (
           ),
     # .byte 0xd4          ;d4         Illegal
     Opcode(number=0xd4,
-           disasm_template=".byte 0xd4",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # cmp 0xaa,x          ;d5 aa      Zero Page X
     Opcode(number=0xd5,
-           disasm_template="cmp 0xaa,x",
+           disasm_template="cmp {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # dec 0xaa,x          ;d6 aa      Zero Page X
     Opcode(number=0xd6,
-           disasm_template="dec 0xaa,x",
+           disasm_template="dec {zp},x",
            addr_mode=AddressModes.ZeroPageX,
           ),
     # bbc 6,0xaa,label39  ;d7 aa fd   Zero Page Bit Relative
     Opcode(number=0xd7,
-           disasm_template="bbc 6,0xaa,label39",
+           disasm_template="bbc 6,{zp},label39",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # cld                 ;d8         Implied
@@ -1138,12 +1138,12 @@ Opcodes = (
           ),
     # cmp 0xaabb,y        ;d9 bb aa   Absolute Y
     Opcode(number=0xd9,
-           disasm_template="cmp 0xaabb,y",
+           disasm_template="cmp {abs},y",
            addr_mode=AddressModes.AbsoluteY,
           ),
     # .byte 0xda          ;da         Illegal
     Opcode(number=0xda,
-           disasm_template=".byte 0xda",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # clb 6,a             ;db         Accumulator Bit
@@ -1153,37 +1153,37 @@ Opcodes = (
           ),
     # .byte 0xdc          ;dc         Illegal
     Opcode(number=0xdc,
-           disasm_template=".byte 0xdc",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
           ),
     # cmp 0xaabb,x        ;dd bb aa   Absolute X
     Opcode(number=0xdd,
-           disasm_template="cmp 0xaabb,x",
+           disasm_template="cmp {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # dec 0xaabb,x        ;de bb aa   Absolute X
     Opcode(number=0xde,
-           disasm_template="dec 0xaabb,x",
+           disasm_template="dec {abs},x",
            addr_mode=AddressModes.AbsoluteX,
           ),
     # clb 6,0xaa          ;df aa      Zero Page Bit
     Opcode(number=0xdf,
-           disasm_template="clb 6,0xaa",
+           disasm_template="clb 6,{zp}",
            addr_mode=AddressModes.ZeroPageBit
           ),
     # cpx #0xaa           ;e0 aa      Immediate
     Opcode(number=0xe0,
-           disasm_template="cpx #0xaa",
+           disasm_template="cpx #{imm}",
            addr_mode=AddressModes.Immediate
           ),
     # sbc [0xaa,x]        ;e1 aa      Indirect X
     Opcode(number=0xe1,
-           disasm_template="sbc [0xaa,x]",
+           disasm_template="sbc [{zp},x]",
            addr_mode=AddressModes.IndirectX
           ),
     # div 0xaa,x          ;e2 aa      Zero Page X
     Opcode(number=0xe2,
-           disasm_template="div 0xaa,x",
+           disasm_template="div {zp},x",
            addr_mode=AddressModes.ZeroPageX
           ),
     # bbs 7,a,label40     ;e3 fe      Accumulator Bit Relative
@@ -1193,22 +1193,22 @@ Opcodes = (
           ),
     # cpx 0xaa            ;e4 aa      Zero Page
     Opcode(number=0xe4,
-           disasm_template="cpx 0xaa",
+           disasm_template="cpx {zp}",
            addr_mode=AddressModes.ZeroPage
           ),
     # sbc 0xaa            ;e5 aa      Zero Page
     Opcode(number=0xe5,
-           disasm_template="sbc 0xaa",
+           disasm_template="sbc {zp}",
            addr_mode=AddressModes.ZeroPage
           ),
     # inc 0xaa            ;e6 aa      Zero Page
     Opcode(number=0xe6,
-           disasm_template="inc 0xaa",
+           disasm_template="inc {zp}",
            addr_mode=AddressModes.ZeroPage
           ),
     # bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
     Opcode(number=0xe7,
-           disasm_template="bbs 7,0xaa,label41",
+           disasm_template="bbs 7,{zp},label41",
            addr_mode=AddressModes.AccumulatorBitRelative
           ),
     # inx                 ;e8         Implied
@@ -1218,7 +1218,7 @@ Opcodes = (
           ),
     # sbc #0xaa           ;e9 aa      Zero Page
     Opcode(number=0xe9,
-           disasm_template="sbc #0xaa",
+           disasm_template="sbc #{imm}",
            addr_mode=AddressModes.ZeroPage
           ),
     # nop                 ;ea         Implied
@@ -1233,22 +1233,22 @@ Opcodes = (
           ),
     # cpx 0xaabb          ;ec bb aa   Absolute
     Opcode(number=0xec,
-           disasm_template="cpx 0xaabb",
+           disasm_template="cpx {abs}",
            addr_mode=AddressModes.Absolute
           ),
     # sbc 0xaabb          ;ed bb aa   Absolute
     Opcode(number=0xed,
-           disasm_template="sbc 0xaabb",
+           disasm_template="sbc {abs}",
            addr_mode=AddressModes.Absolute
           ),
     # inc 0xaabb          ;ee bb aa   Absolute
     Opcode(number=0xee,
-           disasm_template="inc 0xaabb",
+           disasm_template="inc {abs}",
            addr_mode=AddressModes.Absolute
           ),
     # seb 7,0xaa          ;ef aa      Zero Page Bit
     Opcode(number=0xef,
-           disasm_template="seb 7,0xaa",
+           disasm_template="seb 7,{zp}",
            addr_mode=AddressModes.ZeroPageBit
           ),
     # beq label42         ;f0 fe      Relative
@@ -1258,12 +1258,12 @@ Opcodes = (
           ),
     # sbc [0xaa],y        ;f1 aa      Indirect Y
     Opcode(number=0xf1,
-           disasm_template="sbc [0xaa],y",
+           disasm_template="sbc [{zp}],y",
            addr_mode=AddressModes.IndirectY
           ),
     # .byte 0xf2          ;f2         Illegal
     Opcode(number=0xf2,
-           disasm_template=".byte 0xf2",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal
           ),
     # bbc 7,a,label43     ;f3 fe      Accumulator Bit Relative
@@ -1273,22 +1273,22 @@ Opcodes = (
           ),
     # .byte 0xf4          ;f4         Illegal
     Opcode(number=0xf4,
-           disasm_template=".byte 0x4",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal
           ),
     # sbc 0xaa,x          ;f5 aa      Zero Page X
     Opcode(number=0xf5,
-           disasm_template="sbc 0xaa,x",
+           disasm_template="sbc {zp},x",
            addr_mode=AddressModes.ZeroPageX
           ),
     # inc 0xaa,x          ;f6 aa      Zero Page X
     Opcode(number=0xf6,
-           disasm_template="inc 0xaa,x",
+           disasm_template="inc {zp},x",
            addr_mode=AddressModes.ZeroPageX
           ),
     # bbc 7,0xaa,label44  ;f7 aa fd   Zero Page Bit Relative
     Opcode(number=0xf7,
-           disasm_template="bbc 7,0xaa,label44",
+           disasm_template="bbc 7,{zp},label44",
            addr_mode=AddressModes.ZeroPageBitRelative
           ),
     # sed                 ;f8         Implied
@@ -1303,7 +1303,7 @@ Opcodes = (
           ),
     # .byte 0xfa          ;fa         Illegal
     Opcode(number=0xfa,
-           disasm_template=".byte 0xfa",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal
           ),
     # clb 7,a             ;fb         Accumulator Bit
@@ -1313,22 +1313,22 @@ Opcodes = (
           ),
     # .byte 0xfc          ;fc         Illegal
     Opcode(number=0xfc,
-           disasm_template=".byte 0xfc",
+           disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal
           ),
     # sbc 0xaabb,x        ;fd bb aa   Absolute X
     Opcode(number=0xfd,
-           disasm_template="sbc 0xaabb,x",
+           disasm_template="sbc {abs},x",
            addr_mode=AddressModes.AbsoluteX
           ),
     # inc 0xaabb,x        ;fe bb aa   Absolute X
     Opcode(number=0xfe,
-           disasm_template="inc 0xaabb,x",
+           disasm_template="inc {abs},x",
            addr_mode=AddressModes.AbsoluteX
           ),
     # clb 7,0xaa          ;ff aa      Zero Page Bit
     Opcode(number=0xff,
-           disasm_template="clb 7,0xaa",
+           disasm_template="clb 7,{zp}",
            addr_mode=AddressModes.ZeroPageBit
           ),
 )
