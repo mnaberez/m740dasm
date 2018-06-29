@@ -35,7 +35,7 @@ label3:
     jsr [0x45]          ;02 45      Zero Page Indirect
 label4:
     bbs 0,a,label4      ;03 fe      Accumulator Bit Relative
-    .byte 0x04          ;04 00      Illegal
+    .byte 0x04          ;04         Illegal
     ora 0x45            ;05 45      Zero Page
     asl 0x45            ;06 45      Zero Page
 label5:
@@ -43,7 +43,7 @@ label5:
     php                 ;08         Implied
     ora #0xaa           ;09 aa      Immediate
     asl a               ;0a         Implied
-    seb 0,a             ;0b         Accumulator Bit Relative
+    seb 0,a             ;0b         Accumulator Bit
     .byte 0x0c          ;0c         Illegal
     ora 0xaabb          ;0d bb aa   Absolute
     asl 0xaabb          ;0e bb aa   Absolute
@@ -91,7 +91,7 @@ label11:
     set                 ;32         Implied
 label12:
     bbc 1,a,label12     ;33 fe      Accumulator Bit Relative
-    .byte 0x34          ;34 00      Illegal
+    .byte 0x34          ;34         Illegal
     and 0xaa,x          ;35 aa      Zero Page X
     rol 0xaa,x          ;36 aa      Zero Page X
 label13:
@@ -173,7 +173,7 @@ label23:
     sei                 ;78         Implied
     adc 0xaabb,y        ;79 bb aa   Absolute Y
     .byte 0x7a          ;7a         Illegal
-    clb 3,a             ;7b         Accumulator Bit                 
+    clb 3,a             ;7b         Accumulator Bit
     .byte 0x7c          ;7c         Illegal
     adc 0xaabb,x        ;7d bb aa   Absolute X
     ror 0xaabb,x        ;7e bb aa   Absolute X
