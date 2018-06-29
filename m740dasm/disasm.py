@@ -83,6 +83,7 @@ def disassemble_inst(memory, pc):
                             AddressModes.ZeroPage,
                             AddressModes.ZeroPageBit,
                             AddressModes.ZeroPageX,
+                            AddressModes.ZeroPageY,
                             AddressModes.IndirectY):
         inst.zp_addr = operands[0]
 
