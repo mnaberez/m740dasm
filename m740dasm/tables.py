@@ -458,7 +458,7 @@ Opcodes = (
           ),
     # eor [0xaa],y        ;51 aa      Indirect Y
     Opcode(number=0x51,
-           disasm_template="eor {zp},y",
+           disasm_template="eor [{zp}],y",
            addr_mode=AddressModes.IndirectY,
           ),
     # .byte 0x52          ;52         Illegal
@@ -533,7 +533,7 @@ Opcodes = (
           ),
     # rts                 ;60         Implied
     Opcode(number=0x60,
-           disasm_template="clb 2,{zp}",
+           disasm_template="rts",
            addr_mode=AddressModes.Implied,
           ),
     # adc [0xaa,x]        ;61 aa      Indirect X
@@ -608,7 +608,7 @@ Opcodes = (
           ),
     # seb 3,0xaa          ;6f aa      Zero Page Bit
     Opcode(number=0x6f,
-           disasm_template="seb 3,{abs}",
+           disasm_template="seb 3,{zp}",
            addr_mode=AddressModes.ZeroPageBit,
           ),
     # bvs label21         ;70 fe      Relative
@@ -669,7 +669,7 @@ Opcodes = (
     # clb 3,a             ;7b         Accumulator Bit
     Opcode(number=0x7b,
            disasm_template="clb 3,a",
-           addr_mode=AddressModes.Illegal,
+           addr_mode=AddressModes.AccumulatorBit,
           ),
     # .byte 0x7c          ;7c         Illegal
     Opcode(number=0x7c,

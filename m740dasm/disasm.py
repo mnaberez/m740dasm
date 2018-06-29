@@ -70,7 +70,8 @@ def disassemble_inst(memory, pc):
 
     elif inst.addr_mode in (AddressModes.Absolute,
                             AddressModes.AbsoluteX,
-                            AddressModes.AbsoluteY):
+                            AddressModes.AbsoluteY,
+                            AddressModes.IndirectAbsolute):
         inst.abs_addr = operands[0] + (operands[1] << 8)
         inst.abs_addr = operands[0] + (operands[1] << 8)
 
