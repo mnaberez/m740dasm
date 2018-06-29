@@ -1,6 +1,7 @@
 Addressing Modes
 ----------------
 
+Illegal                     .byte 0x04      04
 Immediate                   ADC #$A5        69 A5
 Accumulator                 ROL A           2A
 Zero Page                   ADC $40         65 40
@@ -20,3 +21,4 @@ Zero Page Bit               CLB 5,$44       BF 44
 Accumulator Bit             CLB 5,A         BB
 Accumulator Bit Relative    BBC 5,A,*-12    B3 F2
 Zero Page Bit Relative      BBC 5,$04,*-12  B7 04 F1
+Zero Page Immediate         LDM #0xaa,0xbb  3C AA BB
