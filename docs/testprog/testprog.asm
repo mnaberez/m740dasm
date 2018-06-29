@@ -71,7 +71,7 @@ label8:
     and [0xaa,x]        ;21 aa      Indirect X
     jsr \0xffaa         ;22         Special Page
 label9:
-    bbs 1,a,label9      ;23 fe      Zero Page Bit Relative
+    bbs 1,a,label9      ;23 fe      Accumulator Bit Relative
     bit 0xaa            ;24 aa      Zero Page
     and 0xaa            ;25 aa      Zero Page
     rol 0xaa            ;26 aa      Zero Page
@@ -108,7 +108,7 @@ label13:
     eor [0xaa,x]        ;41 aa      Indirect X
     stp                 ;42         Implied
 label14:
-    bbs 2,a,label14     ;43 fe      Accumulator Bit
+    bbs 2,a,label14     ;43 fe      Accumulator Bit Relative
     com 0xaa            ;44 aa      Zero Page
     eor 0xaa            ;45 aa      Zero Page
     lsr 0xaa            ;46 aa      Zero Page
@@ -225,7 +225,7 @@ label30:
     lda 0xaa            ;a5 aa      Zero Page
     ldx 0xaa            ;a6 aa      Zero Page
 label31:
-    bbs 5,0xaa,label31  ;a7 aa fd   Accumulator Bit Relative
+    bbs 5,0xaa,label31  ;a7 aa fd   Zero Page Bit Relative
     tay                 ;a8         Implied
     lda #0xaa           ;a9 aa      Immediate
     tax                 ;aa         Implied

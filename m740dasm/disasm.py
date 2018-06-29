@@ -7,7 +7,7 @@ from m740dasm.tables import (
 
 class Instruction(object):
     __slots__ = ('disasm_template', 'addr_mode', 'opcode', 'operands',
-                 'zp_addr', 'immediate', 'abs_addr', 'sp_addr')
+                 'zp_addr', 'immediate', 'abs_addr', 'sp_addr', 'rel_addr')
 
     def __init__(self, **kwargs):
         self.disasm_template = '' # "cmp @ix+IXD, #IMB"
@@ -15,6 +15,7 @@ class Instruction(object):
         self.zp_addr = None       # zero page address
         self.abs_addr = None      # absolute address
         self.sp_addr = None       # special page address
+        self.rel_addr = None      # resolved relative address
         self.immediate = None     # immediate value
         self.opcode = None        # opcode byte
         self.operands = ()        # operand bytes
@@ -42,6 +43,7 @@ class Instruction(object):
         ('zp_addr',   '{zp}',  '0x%02x'),
         ('sp_addr',   '{sp}',  '0xff%02x'),
         ('abs_addr',  '{abs}', '0x%04x'),
+        ('rel_addr',  '{rel}', '0x%04x'),
         ('immediate', '{imm}', '0x%02x'),
         )
 
@@ -93,6 +95,10 @@ def disassemble_inst(memory, pc):
 
     elif inst.addr_mode == AddressModes.SpecialPage:
         inst.sp_addr = operands[0]
+
+    elif inst.addr_mode in (AddressModes.Relative,
+                            AddressModes.AccumulatorBitRelative):
+        inst.rel_addr = _resolve_rel(pc, operands[0])
 
     else:
         msg = "Unhandled addressing mode %r at 0x%04x" % (

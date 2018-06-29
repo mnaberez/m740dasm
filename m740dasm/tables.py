@@ -40,7 +40,7 @@ InstructionLengths = {
     AddressModes.SpecialPage:             2,
     AddressModes.ZeroPageBit:             2,
     AddressModes.AccumulatorBit:          1,
-    AddressModes.AccumulatorBitRelative:  3,
+    AddressModes.AccumulatorBitRelative:  2,
     AddressModes.ZeroPageBitRelative:     3,
     AddressModes.ZeroPageImmediate:       3,
 }
@@ -68,7 +68,7 @@ Opcodes = (
           ),
     # bbs 0,a,label4      ;03 fe      Accumulator Bit Relative
     Opcode(number=0x03,
-           disasm_template="bbs 0,a,label4",
+           disasm_template="bbs 0,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0x04          ;04         Illegal
@@ -88,7 +88,7 @@ Opcodes = (
           ),
     # bbs 0,0xaa,label5   ;07 aa fd   Zero Page Bit Relative
     Opcode(number=0x07,
-           disasm_template="bbs 0,0xaa,label5",
+           disasm_template="bbs 0,{zp},label5",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # php                 ;08         Implied
@@ -133,7 +133,7 @@ Opcodes = (
           ),
     # bpl label6          ;10 fe      Relative
     Opcode(number=0x10,
-           disasm_template="bpl label6",
+           disasm_template="bpl {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # ora [0xaa],y        ;11 aa      Indirect Y
@@ -148,7 +148,7 @@ Opcodes = (
           ),
     # bbc 0,a,label7      ;13 fe      Accumulator Bit Relative
     Opcode(number=0x13,
-           disasm_template="bbc 0,a,label7",
+           disasm_template="bbc 0,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0x14          ;14         Illegal
@@ -226,10 +226,10 @@ Opcodes = (
            disasm_template="jsr \\{sp}",
            addr_mode=AddressModes.SpecialPage,
           ),
-    # bbs 1,a,label9      ;23 fe      Zero Page Bit Relative
+    # bbs 1,a,label9      ;23 fe      Accumulator Bit Relative
     Opcode(number=0x23,
-           disasm_template="bbs 1,a,label9",
-           addr_mode=AddressModes.ZeroPageBitRelative,
+           disasm_template="bbs 1,a,{rel}",
+           addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # bit 0xaa            ;24 aa      Zero Page
     Opcode(number=0x24,
@@ -293,7 +293,7 @@ Opcodes = (
           ),
     # bmi label11         ;30 fe      Relative
     Opcode(number=0x30,
-           disasm_template="bmi label11",
+           disasm_template="bmi {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # and [0xaa],y        ;31 aa      Indirect Y
@@ -308,7 +308,7 @@ Opcodes = (
           ),
     # bbc 1,a,label12     ;33 fe      Accumulator Bit Relative
     Opcode(number=0x33,
-           disasm_template="bbc 1,a,label12",
+           disasm_template="bbc 1,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0x34          ;34 00      Illegal
@@ -386,10 +386,10 @@ Opcodes = (
            disasm_template="stp",
            addr_mode=AddressModes.Implied,
           ),
-    # bbs 2,a,label14     ;43 fe      Accumulator Bit
+    # bbs 2,a,label14     ;43 fe      Accumulator Bit Relative
     Opcode(number=0x43,
-           disasm_template="bbs 2,a,label14",
-           addr_mode=AddressModes.AccumulatorBit,
+           disasm_template="bbs 2,a,{rel}",
+           addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # com 0xaa            ;44 aa      Zero Page
     Opcode(number=0x44,
@@ -453,7 +453,7 @@ Opcodes = (
           ),
     # bvc label16         ;50 fe      Relative
     Opcode(number=0x50,
-           disasm_template="bvc label16",
+           disasm_template="bvc {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # eor [0xaa],y        ;51 aa      Indirect Y
@@ -468,7 +468,7 @@ Opcodes = (
           ),
     # bbc 2,a,label17     ;53 fe      Accumulator Bit Relative
     Opcode(number=0x53,
-           disasm_template="bbc 2,a,label17",
+           disasm_template="bbc 2,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0x54          ;54         Illegal
@@ -548,7 +548,7 @@ Opcodes = (
           ),
     # bbs 3,a,label19     ;63 fe      Accumulator Bit Relative
     Opcode(number=0x63,
-           disasm_template="bbs 3,a,label19",
+           disasm_template="bbs 3,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # tst 0xaa            ;64 aa      Zero Page
@@ -613,7 +613,7 @@ Opcodes = (
           ),
     # bvs label21         ;70 fe      Relative
     Opcode(number=0x70,
-           disasm_template="bvs label21",
+           disasm_template="bvs {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # adc [0xaa],y        ;71 aa      Indirect Y
@@ -628,7 +628,7 @@ Opcodes = (
           ),
     # bbc 3,a,label22     ;73 fe      Accumulator Bit Relative
     Opcode(number=0x73,
-           disasm_template="bbc 3,a,label22",
+           disasm_template="bbc 3,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0x74          ;74         Illegal
@@ -693,7 +693,7 @@ Opcodes = (
           ),
     # bra label24         ;80 fe      Relative
     Opcode(number=0x80,
-           disasm_template="bra label24",
+           disasm_template="bra {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # sta [0xaa,x]        ;81 aa      Indirect X
@@ -708,7 +708,7 @@ Opcodes = (
           ),
     # bbs 4,a,label25     ;83 fe      Accumulator Bit Relative
     Opcode(number=0x83,
-           disasm_template="bbs 4,a,label25",
+           disasm_template="bbs 4,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # sty 0xaa            ;84 aa      Zero Page
@@ -773,7 +773,7 @@ Opcodes = (
           ),
     # bcc label27         ;90 fe      Relative
     Opcode(number=0x90,
-           disasm_template="bcc label27",
+           disasm_template="bcc {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # sta [0xaa],y        ;91 aa      Indirect Y
@@ -788,7 +788,7 @@ Opcodes = (
           ),
     # bbc 4,a,label28     ;93 fe      Accumulator Bit Relative
     Opcode(number=0x93,
-           disasm_template="bbc 4,a,label28",
+           disasm_template="bbc 4,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # sty 0xaa,x          ;94 aa      Zero Page X
@@ -868,7 +868,7 @@ Opcodes = (
           ),
     # bbs 5,a,label30     ;a3 fe      Accumulator Bit Relative
     Opcode(number=0xa3,
-           disasm_template="bbs 5,a,label30",
+           disasm_template="bbs 5,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # ldy 0xaa            ;a4 aa      Zero Page
@@ -886,10 +886,10 @@ Opcodes = (
            disasm_template="ldx {zp}",
            addr_mode=AddressModes.ZeroPage,
           ),
-    # bbs 5,0xaa,label31  ;a7 aa fd   Accumulator Bit Relative
+    # bbs 5,0xaa,label31  ;a7 aa fd   Zero Page Bit Relative
     Opcode(number=0xa7,
            disasm_template="bbs 5,{zp},label31",
-           addr_mode=AddressModes. AccumulatorBitRelative,
+           addr_mode=AddressModes. ZeroPageBitRelative,
           ),
     # tay                 ;a8         Implied
     Opcode(number=0xa8,
@@ -933,7 +933,7 @@ Opcodes = (
           ),
     # bcs label32         ;b0 fe      Relative
     Opcode(number=0xb0,
-           disasm_template="bcs label32",
+           disasm_template="bcs {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # lda [0xaa],y        ;b1 aa      Indirect Y
@@ -948,7 +948,7 @@ Opcodes = (
           ),
     # bbc 5,a,label33     ;b3 fe      Accumulator Bit Relative
     Opcode(number=0xb3,
-           disasm_template="bbc 5,a,label33",
+           disasm_template="bbc 5,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # ldy 0xaa,x          ;b4 aa      Zero Page X
@@ -1028,7 +1028,7 @@ Opcodes = (
           ),
     # bbs 6,a,label35     ;c3 fe      Accumulator Bit Relative
     Opcode(number=0xc3,
-           disasm_template="bbs 6,a,label35",
+           disasm_template="bbs 6,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # cpy 0xaa            ;c4 aa      Zero Page
@@ -1093,7 +1093,7 @@ Opcodes = (
           ),
     # bne label37         ;d0 fe      Relative
     Opcode(number=0xd0,
-           disasm_template="bne label37",
+           disasm_template="bne {rel}",
            addr_mode=AddressModes.Relative,
           ),
     # cmp [0xaa],y        ;d1 aa      Indirect Y
@@ -1108,7 +1108,7 @@ Opcodes = (
           ),
     # bbc 6,a,label38     ;d3 fe      Accumulator Bit Relative
     Opcode(number=0xd3,
-           disasm_template="bbc 6,a,label38",
+           disasm_template="bbc 6,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
           ),
     # .byte 0xd4          ;d4         Illegal
@@ -1188,7 +1188,7 @@ Opcodes = (
           ),
     # bbs 7,a,label40     ;e3 fe      Accumulator Bit Relative
     Opcode(number=0xe3,
-           disasm_template="bbs 7,a,label40",
+           disasm_template="bbs 7,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative
           ),
     # cpx 0xaa            ;e4 aa      Zero Page
@@ -1253,7 +1253,7 @@ Opcodes = (
           ),
     # beq label42         ;f0 fe      Relative
     Opcode(number=0xf0,
-           disasm_template="beq label42",
+           disasm_template="beq {rel}",
            addr_mode=AddressModes.Relative
           ),
     # sbc [0xaa],y        ;f1 aa      Indirect Y
@@ -1268,7 +1268,7 @@ Opcodes = (
           ),
     # bbc 7,a,label43     ;f3 fe      Accumulator Bit Relative
     Opcode(number=0xf3,
-           disasm_template="bbc 7,a,label43",
+           disasm_template="bbc 7,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative
           ),
     # .byte 0xf4          ;f4         Illegal
