@@ -299,7 +299,7 @@ label40:
     sbc 0xaa            ;e5 aa      Zero Page
     inc 0xaa            ;e6 aa      Zero Page
 label41:
-    bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
+    bbs 7,0xaa,label41  ;e7 aa fd   Zero Page Bit Relative
     inx                 ;e8         Implied
     sbc #0xaa           ;e9 aa      Immediate
     nop                 ;ea         Implied

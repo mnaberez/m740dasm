@@ -63,7 +63,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 0,0xaa,label5   ;07 aa fd   Zero Page Bit Relative
     def test_07_bbs(self):
-        pass # TODO rel
+        mem = [0x07, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 0,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # php                 ;08         Implied
     def test_08_php(self):
@@ -186,7 +190,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 0,0xaa,label8   ;17 aa fd   Zero Page Bit Relative
     def test_17_bbc(self):
-        pass # TODO rel
+        mem = [0x17, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 0,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # clc                 ;18         Implied
     def test_18_clc(self):
@@ -310,8 +318,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 1,0xaa,label10  ;27 aa fd   Zero Page Bit Relative
     def test_27_bbs(self):
-        mem = [0x27, 0xaa, 0xfd]
-        # TODO relative
+        mem = [0x27, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 1,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # plp                 ;28         Implied
     def test_28_plp(self):
@@ -435,7 +446,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 1,0xaa,label13  ;37 aa fd   Zero Page Bit Relative
     def test_37_bbc(self):
-        pass # TODO relative
+        mem = [0x37, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 1,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # sec                 ;38         Implied
     def test_38_sec(self):
@@ -551,7 +566,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 2,0xaa,label15  ;47 aa fd   Zero Page Bit Relative
     def test_47_bbs(self):
-        pass # TODO relative
+        mem = [0x47, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 2,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # pha                 ;48         Implied
     def test_48_pha(self):
@@ -675,7 +694,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 2,0xaa,label18  ;57 aa fd   Zero Page Bit Relative
     def test_57_bbc(self):
-        pass # TODO relative
+        mem = [0x57, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 2,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # cli                 ;58         Implied
     def test_58_cli(self):
@@ -799,7 +822,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 3,0xaa,label20  ;67 aa fd   Zero Page Bit Relative
     def test_67_bbs(self):
-        pass # TODO relative
+        mem = [0x67, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 3,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # pla                 ;68         Implied
     def test_68_pla(self):
@@ -923,7 +950,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 3,0xaa,label23  ;77 aa fd   Zero Page Bit Relative
     def test_77_bbc(self):
-        pass # TODO relative
+        mem = [0x77, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 3,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # sei                 ;78         Implied
     def test_78_sei(self):
@@ -1047,7 +1078,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 4,0xaa,label26  ;87 aa fd   Zero Page Bit Relative
     def test_87_bbs(self):
-        pass # TODO relative
+        mem = [0x87, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 4,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # dey                 ;88         Implied
     def test_88_dey(self):
@@ -1171,7 +1206,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 4,0xaa,label29  ;97 aa fd   Zero Page Bit Relative
     def test_97_bbc(self):
-        pass # TODO relative
+        mem = [0x97, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 4,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # tya                 ;98         Implied
     def test_98_tya(self):
@@ -1295,7 +1334,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 5,0xaa,label31  ;a7 aa fd   Zero Page Bit Relative
     def test_a7_bbs(self):
-        pass # TODO relative
+        mem = [0xa7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 5,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # tay                 ;a8         Implied
     def test_a8_tay(self):
@@ -1419,7 +1462,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 5,0xaa,label34  ;b7 aa fd   Zero Page Bit Relative
     def test_b7_bbc(self):
-        pass # TODO relative
+        mem = [0xb7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 5,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # clv                 ;b8         Implied
     def test_b8_clv(self):
@@ -1543,7 +1590,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbs 6,0xaa,label36  ;c7 aa fd   Zero Page Bit Relative
     def test_c7_bbs(self):
-        pass # TODO relative
+        mem = [0xc7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 6,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # iny                 ;c8         Implied
     def test_c8_iny(self):
@@ -1667,7 +1718,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 6,0xaa,label39  ;d7 aa fd   Zero Page Bit Relative
     def test_d7_bbc(self):
-        pass # TODO relative
+        mem = [0xd7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 6,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # cld                 ;d8         Implied
     def test_d8_cld(self):
@@ -1789,9 +1844,13 @@ class disassemble_inst_tests(unittest.TestCase):
         self.assertEqual(len(inst), len(mem))
         self.assertEqual(inst.addr_mode, AddressModes.ZeroPage)
 
-    # bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
+    # bbs 7,0xaa,label41  ;e7 aa fd   Zero Page Bit Relative
     def test_e7_bbs(self):
-        pass # TODO relative
+        mem = [0xe7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbs 7,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # inx                 ;e8         Implied
     def test_e8_inx(self):
@@ -1915,7 +1974,11 @@ class disassemble_inst_tests(unittest.TestCase):
 
     # bbc 7,0xaa,label44  ;f7 aa fd   Zero Page Bit Relative
     def test_f7_bbc(self):
-        pass # TODO relative
+        mem = [0xf7, 0xaa, 0x1d]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "bbc 7,0xaa,0x0020")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBitRelative)
 
     # sed                 ;f8         Implied
     def test_f8_sed(self):

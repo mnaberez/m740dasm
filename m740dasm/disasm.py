@@ -100,6 +100,11 @@ def disassemble_inst(memory, pc):
                             AddressModes.AccumulatorBitRelative):
         inst.rel_addr = _resolve_rel(pc, operands[0])
 
+    elif inst.addr_mode in (AddressModes.Relative,
+                            AddressModes.ZeroPageBitRelative):
+        inst.zp_addr = operands[0]
+        inst.rel_addr = _resolve_rel(pc, operands[1])
+
     else:
         msg = "Unhandled addressing mode %r at 0x%04x" % (
             inst.addr_mode, pc-1)

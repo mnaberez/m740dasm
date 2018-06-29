@@ -88,7 +88,7 @@ Opcodes = (
           ),
     # bbs 0,0xaa,label5   ;07 aa fd   Zero Page Bit Relative
     Opcode(number=0x07,
-           disasm_template="bbs 0,{zp},label5",
+           disasm_template="bbs 0,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # php                 ;08         Implied
@@ -168,8 +168,8 @@ Opcodes = (
           ),
     # bbc 0,0xaa,label8   ;17 aa fd   Zero Page Bit Relative
     Opcode(number=0x17,
-           disasm_template="bbc 0,{zp},label8",
-           addr_mode=AddressModes.ZeroPageX,
+           disasm_template="bbc 0,{zp},{rel}",
+           addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # clc                 ;18         Implied
     Opcode(number=0x18,
@@ -248,8 +248,8 @@ Opcodes = (
           ),
     # bbs 1,0xaa,label10  ;27 aa fd   Zero Page Bit Relative
     Opcode(number=0x27,
-           disasm_template="bbs 1,{zp},label10",
-           addr_mode=AddressModes.ZeroPage,
+           disasm_template="bbs 1,{zp},{rel}",
+           addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # plp                 ;28         Implied
     Opcode(number=0x28,
@@ -328,7 +328,7 @@ Opcodes = (
           ),
     # bbc 1,0xaa,label13  ;37 aa fd   Zero Page Bit Relative
     Opcode(number=0x37,
-           disasm_template="bbc 1,{zp},label13",
+           disasm_template="bbc 1,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # sec                 ;38         Implied
@@ -408,7 +408,7 @@ Opcodes = (
           ),
     # bbs 2,0xaa,label15  ;47 aa fd   Zero Page Bit Relative
     Opcode(number=0x47,
-           disasm_template="bbs 2,{zp},label15",
+           disasm_template="bbs 2,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # pha                 ;48         Implied
@@ -488,7 +488,7 @@ Opcodes = (
           ),
     # bbc 2,0xaa,label18  ;57 aa fd   Zero Page Bit Relative
     Opcode(number=0x57,
-           disasm_template="bbc 2,{zp},label18",
+           disasm_template="bbc 2,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # cli                 ;58         Implied
@@ -568,7 +568,7 @@ Opcodes = (
           ),
     # bbs 3,0xaa,label20  ;67 aa fd   Zero Page Bit Relative
     Opcode(number=0x67,
-           disasm_template="bbs 3,{zp},label20",
+           disasm_template="bbs 3,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # pla                 ;68         Implied
@@ -648,7 +648,7 @@ Opcodes = (
           ),
     # bbc 3,0xaa,label23  ;77 aa fd   Zero Page Bit Relative
     Opcode(number=0x77,
-           disasm_template="bbc 3,{zp},label23",
+           disasm_template="bbc 3,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # sei                 ;78         Implied
@@ -728,7 +728,7 @@ Opcodes = (
           ),
     # bbs 4,0xaa,label26  ;87 aa fd   Zero Page Bit Relative
     Opcode(number=0x87,
-           disasm_template="bbs 4,{zp},label26",
+           disasm_template="bbs 4,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # dey                 ;88         Implied
@@ -808,7 +808,7 @@ Opcodes = (
           ),
     # bbc 4,0xaa,label29  ;97 aa fd   Zero Page Bit Relative
     Opcode(number=0x97,
-           disasm_template="bbc 4,{zp},label29",
+           disasm_template="bbc 4,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # tya                 ;98         Implied
@@ -888,7 +888,7 @@ Opcodes = (
           ),
     # bbs 5,0xaa,label31  ;a7 aa fd   Zero Page Bit Relative
     Opcode(number=0xa7,
-           disasm_template="bbs 5,{zp},label31",
+           disasm_template="bbs 5,{zp},{rel}",
            addr_mode=AddressModes. ZeroPageBitRelative,
           ),
     # tay                 ;a8         Implied
@@ -968,7 +968,7 @@ Opcodes = (
           ),
     # bbc 5,0xaa,label34  ;b7 aa fd   Zero Page Bit Relative
     Opcode(number=0xb7,
-           disasm_template="bbc 5,{zp},label34",
+           disasm_template="bbc 5,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # clv                 ;b8         Implied
@@ -1048,7 +1048,7 @@ Opcodes = (
           ),
     # bbs 6,0xaa,label36  ;c7 aa fd   Zero Page Bit Relative
     Opcode(number=0xc7,
-           disasm_template="bbs 6,{zp},label36",
+           disasm_template="bbs 6,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # iny                 ;c8         Implied
@@ -1128,7 +1128,7 @@ Opcodes = (
           ),
     # bbc 6,0xaa,label39  ;d7 aa fd   Zero Page Bit Relative
     Opcode(number=0xd7,
-           disasm_template="bbc 6,{zp},label39",
+           disasm_template="bbc 6,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative,
           ),
     # cld                 ;d8         Implied
@@ -1206,10 +1206,10 @@ Opcodes = (
            disasm_template="inc {zp}",
            addr_mode=AddressModes.ZeroPage
           ),
-    # bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
+    # bbs 7,0xaa,label41  ;e7 aa fd   Zero Page Bit Relative
     Opcode(number=0xe7,
-           disasm_template="bbs 7,{zp},label41",
-           addr_mode=AddressModes.AccumulatorBitRelative
+           disasm_template="bbs 7,{zp},{rel}",
+           addr_mode=AddressModes.ZeroPageBitRelative
           ),
     # inx                 ;e8         Implied
     Opcode(number=0xe8,
@@ -1288,7 +1288,7 @@ Opcodes = (
           ),
     # bbc 7,0xaa,label44  ;f7 aa fd   Zero Page Bit Relative
     Opcode(number=0xf7,
-           disasm_template="bbc 7,{zp},label44",
+           disasm_template="bbc 7,{zp},{rel}",
            addr_mode=AddressModes.ZeroPageBitRelative
           ),
     # sed                 ;f8         Implied
