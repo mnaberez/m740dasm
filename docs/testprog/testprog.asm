@@ -301,7 +301,7 @@ label40:
 label41:
     bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
     inx                 ;e8         Implied
-    sbc #0xaa           ;e9 aa      Zero Page
+    sbc #0xaa           ;e9 aa      Immediate
     nop                 ;ea         Implied
     seb 7,a             ;eb         Accumulator Bit
     cpx 0xaabb          ;ec bb aa   Absolute

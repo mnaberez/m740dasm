@@ -1216,10 +1216,10 @@ Opcodes = (
            disasm_template="inx",
            addr_mode=AddressModes.Implied
           ),
-    # sbc #0xaa           ;e9 aa      Zero Page
+    # sbc #0xaa           ;e9 aa      Immediate
     Opcode(number=0xe9,
            disasm_template="sbc #{imm}",
-           addr_mode=AddressModes.ZeroPage
+           addr_mode=AddressModes.Immediate
           ),
     # nop                 ;ea         Implied
     Opcode(number=0xea,
@@ -1298,8 +1298,8 @@ Opcodes = (
           ),
     # sbc 0xaabb,y        ;f9 bb aa   Absolute Y
     Opcode(number=0xf9,
-           disasm_template="sed",
-           addr_mode=AddressModes.Implied
+           disasm_template="sbc 0xaabb,y",
+           addr_mode=AddressModes.AbsoluteY
           ),
     # .byte 0xfa          ;fa         Illegal
     Opcode(number=0xfa,

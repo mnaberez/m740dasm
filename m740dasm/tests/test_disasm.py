@@ -1650,6 +1650,242 @@ class disassemble_inst_tests(unittest.TestCase):
         self.assertEqual(len(inst), len(mem))
         self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBit)
 
+    # cpx #0xaa           ;e0 aa      Immediate
+    def test_e0_cpx(self):
+        mem = [0xe0, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "cpx #0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Immediate)
+
+    # sbc [0xaa,x]        ;e1 aa      Indirect X
+    def test_e1_sbc(self):
+        mem = [0xe1, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc [0xaa,x]")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.IndirectX)
+
+    # div 0xaa,x          ;e2 aa      Zero Page X
+    def test_e2_div(self):
+        mem = [0xe2, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "div 0xaa,x")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageX)
+
+    # bbs 7,a,label40     ;e3 fe      Accumulator Bit Relative
+    def test_e3_bbs(self):
+        pass # TODO relative
+
+    # cpx 0xaa            ;e4 aa      Zero Page
+    def test_e4_cpx(self):
+        mem = [0xe4, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "cpx 0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPage)
+
+    # sbc 0xaa            ;e5 aa      Zero Page
+    def test_e5_sbc(self):
+        mem = [0xe5, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc 0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPage)
+
+    # inc 0xaa            ;e6 aa      Zero Page
+    def test_e6_inc(self):
+        mem = [0xe6, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "inc 0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPage)
+
+    # bbs 7,0xaa,label41  ;e7 aa fd   Accumulator Bit Relative
+    def test_e7_bbs(self):
+        pass # TODO relative
+
+    # inx                 ;e8         Implied
+    def test_e8_inx(self):
+        mem = [0xe8]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "inx")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Implied)
+
+    # sbc #0xaa           ;e9 aa      Immediate
+    def test_e9_sbc(self):
+        mem = [0xe9, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc #0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Immediate)
+
+    # nop                 ;ea         Implied
+    def test_ea_nop(self):
+        mem = [0xea]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "nop")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Implied)
+
+    # seb 7,a             ;eb         Accumulator Bit
+    def test_eb_seb(self):
+        mem = [0xeb]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "seb 7,a")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.AccumulatorBit)
+
+    # cpx 0xaabb          ;ec bb aa   Absolute
+    def test_ec_cpx(self):
+        mem = [0xec, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "cpx 0xaabb")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Absolute)
+
+    # sbc 0xaabb          ;ed bb aa   Absolute
+    def test_ed_sbc(self):
+        mem = [0xed, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc 0xaabb")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Absolute)
+
+    # inc 0xaabb          ;ee bb aa   Absolute
+    def test_ee_inc(self):
+        mem = [0xee, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "inc 0xaabb")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Absolute)
+
+    # seb 7,0xaa          ;ef aa      Zero Page Bit
+    def test_ef_seb(self):
+        mem = [0xef, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "seb 7,0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBit)
+
+    # beq label42         ;f0 fe      Relative
+    def test_f0_beq(self):
+        pass # TODO relative
+
+    # sbc [0xaa],y        ;f1 aa      Indirect Y
+    def test_f1_sbc(self):
+        mem = [0xf1, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc [0xaa],y")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.IndirectY)
+
+    # .byte 0xf2          ;f2         Illegal
+    def test_f2_illegal(self):
+        mem = [0xf2]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), ".byte 0xf2")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Illegal)
+
+    # bbc 7,a,label43     ;f3 fe      Accumulator Bit Relative
+    def test_f3_bbc(self):
+        pass # TODO relative
+
+    # .byte 0xf4          ;f4         Illegal
+    def test_f4_illegal(self):
+        mem = [0xf4]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), ".byte 0xf4")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Illegal)
+
+    # sbc 0xaa,x          ;f5 aa      Zero Page X
+    def test_f5_sbc(self):
+        mem = [0xf5, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc 0xaa,x")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageX)
+
+    # inc 0xaa,x          ;f6 aa      Zero Page X
+    def test_f6_inc(self):
+        mem = [0xf6, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "inc 0xaa,x")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageX)
+
+    # bbc 7,0xaa,label44  ;f7 aa fd   Zero Page Bit Relative
+    def test_f7_bbc(self):
+        pass # TODO relative
+
+    # sed                 ;f8         Implied
+    def test_f8_sed(self):
+        mem = [0xf8]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sed")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Implied)
+
+    # sbc 0xaabb,y        ;f9 bb aa   Absolute Y
+    def test_f9_sbc(self):
+        mem = [0xf9, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc 0xaabb,y")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.AbsoluteY)
+
+    # .byte 0xfa          ;fa         Illegal
+    def test_fa_illegal(self):
+        mem = [0xfa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), ".byte 0xfa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Illegal)
+
+    # clb 7,a             ;fb         Accumulator Bit
+    def test_fb_clb(self):
+        mem = [0xfb]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "clb 7,a")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.AccumulatorBit)
+
+    # .byte 0xfc          ;fc         Illegal
+    def test_fc_illegal(self):
+        mem = [0xfc]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), ".byte 0xfc")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.Illegal)
+
+    # sbc 0xaabb,x        ;fd bb aa   Absolute X
+    def test_fd_sbc(self):
+        mem = [0xfd, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "sbc 0xaabb,x")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.AbsoluteX)
+
+    # inc 0xaabb,x        ;fe bb aa   Absolute X
+    def test_fe_inc(self):
+        mem = [0xfe, 0xbb, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "inc 0xaabb,x")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.AbsoluteX)
+
+    # clb 7,0xaa          ;ff aa      Zero Page Bit
+    def test_ff_clb(self):
+        mem = [0xff, 0xaa]
+        inst = disassemble_inst(mem, pc=0)
+        self.assertEqual(str(inst), "clb 7,0xaa")
+        self.assertEqual(len(inst), len(mem))
+        self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBit)
+
 
 def test_suite():
     return unittest.findTestCases(sys.modules[__name__])
