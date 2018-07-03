@@ -1,5 +1,5 @@
 '''
-Parse an ASF2MC8 listing file and create a binary file from it.
+Parse an AS740 listing file and create a binary file from it.
 
 Usage: python lst2bin.py <file.lst> [<file.bin>]
 '''

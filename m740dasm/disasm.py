@@ -7,10 +7,11 @@ from m740dasm.tables import (
 
 class Instruction(object):
     __slots__ = ('disasm_template', 'addr_mode', 'opcode', 'operands',
-                 'zp_addr', 'immediate', 'abs_addr', 'sp_addr', 'rel_addr')
+                 'zp_addr', 'immediate', 'abs_addr', 'sp_addr', 'rel_addr',
+                 'flow_type')
 
     def __init__(self, **kwargs):
-        self.disasm_template = '' # "cmp @ix+IXD, #IMB"
+        self.disasm_template = '' # "lda {abs}"
         self.addr_mode = None     # addressing mode
         self.zp_addr = None       # zero page address
         self.abs_addr = None      # absolute address
@@ -19,6 +20,7 @@ class Instruction(object):
         self.immediate = None     # immediate value
         self.opcode = None        # opcode byte
         self.operands = ()        # operand bytes
+        self.flow_type = None
 
         for k, v in kwargs.items():
             if hasattr(self, k):
@@ -29,7 +31,6 @@ class Instruction(object):
     def __len__(self):
         return 1 + len(self.operands)
 
-
     def __str__(self):
         disasm = self.disasm_template
         for attr, tpl, fmt in self._disasm_formats:
@@ -37,6 +38,12 @@ class Instruction(object):
             if v is not None:
                 disasm = disasm.replace(tpl, fmt % v)
         return disasm
+
+    @property
+    def all_bytes(self):
+        data = [self.opcode]
+        data.extend(self.operands)
+        return data
 
     _disasm_formats = (
         ('opcode',    '{opc}', '0x%02x'),
@@ -47,6 +54,17 @@ class Instruction(object):
         ('immediate', '{imm}', '0x%02x'),
         )
 
+    @property
+    def address(self):
+        for addr in (self.abs_addr, self.zp_addr, self.rel_addr, self.sp_addr):
+            if addr is not None:
+                return addr
+
+    @property
+    def target_address(self):
+        for addr in (self.rel_addr, self.abs_addr):
+            if addr is not None:
+                return addr
 
 def disassemble_inst(memory, pc):
     opcode = Opcodes[memory[pc]]
@@ -62,6 +80,7 @@ def disassemble_inst(memory, pc):
         disasm_template=opcode.disasm_template,
         addr_mode=opcode.addr_mode,
         opcode=opcode.number,
+        flow_type=opcode.flow_type,
         operands=operands,
         )
 
@@ -74,7 +93,6 @@ def disassemble_inst(memory, pc):
                             AddressModes.AbsoluteX,
                             AddressModes.AbsoluteY,
                             AddressModes.IndirectAbsolute):
-        inst.abs_addr = operands[0] + (operands[1] << 8)
         inst.abs_addr = operands[0] + (operands[1] << 8)
 
     elif inst.addr_mode == AddressModes.Immediate:
