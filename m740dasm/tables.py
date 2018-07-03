@@ -915,7 +915,7 @@ Opcodes = (
           ),
     # stx 0xaabb          ;8e bb aa   Absolute
     Opcode(number=0x8e,
-           disasm_template="stx 0xaabb",
+           disasm_template="stx {abs}",
            addr_mode=AddressModes.Absolute,
            flow_type=FlowTypes.Continue,
           ),
