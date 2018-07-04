@@ -30,7 +30,10 @@ def main():
     ]
 
     # 3570 - 3587 table of bytes for comparison
-    for i in range(0x3588, 0x35a3, 2):
+    for i in range(0x3588, 0x35b8, 2):
+        vectors.append(i)
+
+    for i in range(0x351e, 0x3570, 2):
         vectors.append(i)
 
     for i in range(0xb4db, 0xb50d, 2):
