@@ -1,5 +1,4 @@
 import struct
-from m740dasm.tables import AddressModes
 
 class Printer(object):
     def __init__(self, memory, start_address, symbol_table):
@@ -25,13 +24,6 @@ class Printer(object):
                 if self.memory.is_vector_start(address):
                     self.print_vector_line(address)
                     address += 2
-                # TODO
-                # elif self.memory.is_mode_byte(address):
-                #     self.print_mode_byte_line(address)
-                #     address += 1
-                # elif self.memory.is_reserved_byte(address):
-                #     self.print_reserved_byte_line(address)
-                #     address += 1
                 elif self.memory.is_data(address):
                     self.print_data_line(address)
                     address += 1
@@ -49,12 +41,6 @@ class Printer(object):
         for address, inst in self.memory.iter_instructions():
             if inst.address in self.symbol_table.symbols:
                 used_symbols.add(inst.address)
-            # TODO
-            # if inst.bittest_address in self.symbol_table.symbols:
-            #     used_symbols.add(inst.bittest_address)
-            # if inst.stores_immediate_word_in_pointer:
-            #     if inst.immediate in self.symbol_table.symbols:
-            #         used_symbols.add(inst.immediate)
 
         for address, target in self.memory.iter_vectors():
             if target in self.symbol_table.symbols:
