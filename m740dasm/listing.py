@@ -79,7 +79,7 @@ class Printer(object):
 
     def print_label(self, address):
         if address in self.symbol_table.symbols:
-            print("\n%s:" % self.format_ext_address(address))
+            print("\n%s:" % self.format_abs_address(address))
 
     def print_data_line(self, address):
         line = ('    .byte 0x%02x' % self.memory[address]).ljust(28)
@@ -94,7 +94,7 @@ class Printer(object):
 
     def print_vector_line(self, address):
         target = struct.unpack('<H', self.memory[address:address+2])[0]
-        target = self.format_ext_address(target)
+        target = self.format_abs_address(target)
         line = ('    .word %s' % target).ljust(28)
         line += ';%04x  %02x %02x       VECTOR' % (address, self.memory[address], self.memory[address+1])
         name, comment = self.symbol_table.symbols.get(address, ('',''))
@@ -113,93 +113,47 @@ class Printer(object):
         print(line)
 
     def print_instruction_line(self, address, inst):
-        # TODO
-        # if inst.stores_immediate_word_in_pointer:
-        #     if inst.immediate in self.symbol_table.symbols:
-        #         name, comment = self.symbol_table.symbols[inst.immediate]
-        #         inst.disasm_template = inst.disasm_template.replace("IMW", name)
-        # if inst.stores_immediate_word_in_a:
-        #     if inst.immediate in self.symbol_table.symbols and (inst.immediate >= self.start_address):
-        #         name, comment = self.symbol_table.symbols[inst.immediate]
-        #         inst.disasm_template = inst.disasm_template.replace("IMW", name)
-
         disasm = self.format_instruction(inst)
         hexdump = (' '.join([ '%02x' % h for h in inst.all_bytes ])).ljust(8)
 
-        # render instruction as a .byte sequence if asf2mc8 would optimize an
-        # extended address into a direct one, breaking identical reassembly
-        #ext_page_0 = inst.extended_address_page_0
-
-        # TODO
-        # # render instruction as .byte sequence if it is a relative branch
-        # # to an address that does not have a symbol
-        # rel = (inst.addr_mode in (AddressModes.Relative,
-        #                           AddressModes.BitDirectWithRelative))
-        # branch_without_symbol = (rel and ((inst.address not in self.symbol_table.symbols) or
-        #                             (inst.address < self.start_address)))
-        #
-        # if ext_page_0 or branch_without_symbol:
-        #     if ext_page_0:
-        #         note = "EXTENDED_ADDRESS_PAGE_0"
-        #     else: # bad_branch
-        #         note = "BRANCH_WITHOUT_SYMBOL"
-        #
-        #     line = ('    .byte ' + ', '.join([ '0x%02x' % h for h in inst.all_bytes ])).ljust(28)
-        #     line += (';%04x  %s    %s  ' % (address, hexdump, note)).ljust(19)
-        #     line += disasm
-        # else:
         line = '    ' + disasm.ljust(24)
         if not line.endswith(' '):
             line += ' '
         line += ';%04x  %s' % (address, hexdump)
 
-        # TODO
-        # if self.memory.is_branch_always_taken(address):
-        #     line = line.ljust(47) + "BRANCH_ALWAYS_TAKEN"
-        # if self.memory.is_branch_never_taken(address):
-        #     line = line.ljust(47) + "BRANCH_NEVER_TAKEN"
-
-        # TODO
-        # if inst.addr_mode == AddressModes.Vector:
-        #     dest = self.format_ext_address(inst.address)
-        #     line = line.ljust(47) + "CALLV #%d = %s" % (inst.callv, dest)
         print(line)
 
     def format_instruction(self, inst):
-        return str(inst)
-        # TODO
-        d = {'OPC': '0x%02x' % inst.opcode}
+        d = {'{opc}': '0x%02x' % inst.opcode}
 
         if inst.immediate is not None:
-            d['IMB'] = '0x%02x' % inst.immediate
-            d['IMW'] = '0x%04x' % inst.immediate
-        if inst.address is not None:
-            d['EXT'] = self.format_ext_address(inst.address)
-            d['REL'] = self.format_ext_address(inst.address)
-            d['DIR'] = self.format_dir_address(inst.address)
-        if inst.bittest_address is not None:
-            d['DIR'] = self.format_ext_address(inst.bittest_address)
-        if inst.ixd_offset is not None:
-            d['IXD'] = '0x%02x' % inst.ixd_offset
-        if inst.callv is not None:
-            d['VEC'] = '%d' % inst.callv
-        if inst.bit is not None:
-            d['BIT'] = '%d' % inst.bit
-        if inst.register is not None:
-            d['REG'] = '%d' % inst.register
+            d['{imm}'] = '0x%02x' % inst.immediate
+        if inst.abs_addr is not None:
+            d['{abs}'] = self.format_abs_address(inst.abs_addr)
+        if inst.rel_addr is not None:
+            d['{rel}'] = self.format_rel_address(inst.rel_addr)
+        if inst.zp_addr is not None:
+            d['{zp}'] = self.format_zp_address(inst.zp_addr)
 
         disasm = inst.disasm_template
         for k, v in d.items():
             disasm = disasm.replace(k, v)
         return disasm
 
-    def format_ext_address(self, address):
+    def format_abs_address(self, address):
         if address in self.symbol_table.symbols:
             name, comment = self.symbol_table.symbols[address]
             return name
         return '0x%04x' % address
 
-    def format_dir_address(self, address):
+    def format_zp_address(self, address):
+        if address in self.symbol_table.symbols:
+            name, comment = self.symbol_table.symbols[address]
+            return name
+        return '0x%02x' % address
+
+    def format_rel_address(self, address):
+        # TODO should print relative to PC if no symbol found
         if address in self.symbol_table.symbols:
             name, comment = self.symbol_table.symbols[address]
             return name
