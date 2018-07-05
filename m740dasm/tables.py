@@ -1331,7 +1331,7 @@ Opcodes = (
     Opcode(number=0xd3,
            disasm_template="bbc 6,a,{rel}",
            addr_mode=AddressModes.AccumulatorBitRelative,
-           flow_type=FlowTypes.Stop,
+           flow_type=FlowTypes.ConditionalJump,
           ),
     # .byte 0xd4          ;d4         Illegal
     Opcode(number=0xd4,
@@ -1557,7 +1557,7 @@ Opcodes = (
           ),
     # sbc 0xaabb,y        ;f9 bb aa   Absolute Y
     Opcode(number=0xf9,
-           disasm_template="sbc 0xaabb,y",
+           disasm_template="sbc {abs},y",
            addr_mode=AddressModes.AbsoluteY,
            flow_type=FlowTypes.Continue,
           ),
