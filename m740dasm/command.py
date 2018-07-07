@@ -4,7 +4,7 @@ from m740dasm.disasm import disassemble_inst
 from m740dasm.trace import Tracer
 from m740dasm.memory import Memory
 from m740dasm.listing import Printer
-from m740dasm.symbols import MB89620R_SYMBOLS, SymbolTable
+from m740dasm.symbols import M3886_SYMBOLS, SymbolTable
 
 def main():
     with open(sys.argv[1], 'rb') as f:
@@ -47,7 +47,7 @@ def main():
     tracer = Tracer(memory, entry_points, vectors, traceable_range)
     tracer.trace(disassemble_inst)
 
-    symbol_table = SymbolTable(MB89620R_SYMBOLS)
+    symbol_table = SymbolTable(M3886_SYMBOLS)
     symbol_table.generate(memory, start_address) # xxx should pass traceable_range
 
     printer = Printer(memory,

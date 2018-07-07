@@ -72,3 +72,4 @@ sfrs = {
 
 for address, (name, desc) in sfrs.items():
     print("%04x: %s \t;%s" % (address, name, desc))
+    # print("%04x: (\"%s\", \t\"%s\")," % (address, name, desc))
