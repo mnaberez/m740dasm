@@ -4,7 +4,7 @@
 
 m740dasm is a disassembler for Mitsubishi 740 binaries that generates output compatible with the [as740](http://shop-pdp.net/ashtml/as740.htm) assembler.  It can be used to disassemble firmware for many 8-bit Mitsubishi microcontrollers.  The 16- and 32-bit Mitsubishi microcontrollers use different instruction sets and are not supported.
 
-m740dasm was developed to disassemble the firmware of the [Volkswagen Gamma V](https://github.com/mnaberez/vwradio) car radio made by TechniSat.  This radio uses the [M38869FFAHP](http://6502.org/documents/datasheets/mitsubishi/renesas_3886_group_users_manual.pdf) microcontroller.  
+m740dasm was developed to disassemble the firmware of the [Volkswagen Gamma V](https://github.com/mnaberez/vwradio) and [Volkswagen Rhapsody](https://github.com/mnaberez/vwradio) car radios made by TechniSat.  Both radios use the [M38869FFAHP](http://6502.org/documents/datasheets/mitsubishi/renesas_3886_group_users_manual.pdf) microcontroller.  
 
 ## Features
 
