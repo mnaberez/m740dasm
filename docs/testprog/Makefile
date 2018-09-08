@@ -1,12 +1,11 @@
 all: clean out.bin
 
-out.bin: out.lst
-	python lst2bin.py out.lst out.bin
-
-out.lst: testprog.asm
-	as740 -l testprog.asm
-	mv testprog.lst out.lst
-	rm -f out.hlr
+out.bin:
+	cp -f testprog.asm out.asm
+	as740 -l -o out.asm
+	rm -f out.asm
+	aslink out -i
+	srec_cat out.ihx -intel -offset -0x8000 -o out.bin -binary
 
 clean:
 	rm -f out.*

@@ -5,9 +5,6 @@ dist/
 env*/
 htmlcov/
 *~
-*.bin
-*.hlr
-*.lst
 *.pyc
 *.pyo
 *.swp
@@ -16,3 +13,4 @@ htmlcov/
 .tox
 coverage.xml
 nosetests.xml
+out.*
