@@ -1,3 +1,8 @@
+'''
+Usage: m740dasm <filename.bin>
+
+'''
+
 import sys
 
 from m740dasm.disasm import disassemble_inst
@@ -7,6 +12,10 @@ from m740dasm.listing import Printer
 from m740dasm.symbols import M3886_SYMBOLS, SymbolTable
 
 def main():
+    if len(sys.argv) != 2:
+        sys.stderr.write(__doc__)
+        sys.exit(1)
+
     with open(sys.argv[1], 'rb') as f:
         rom = bytearray(f.read())
     start_address = 0x10000 - len(rom)
