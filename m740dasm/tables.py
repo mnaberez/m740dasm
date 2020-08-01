@@ -1565,7 +1565,7 @@ Opcodes = (
     Opcode(number=0xfa,
            disasm_template=".byte {opc}",
            addr_mode=AddressModes.Illegal,
-           flow_type=FlowTypes.ConditionalJump,
+           flow_type=FlowTypes.Stop,
           ),
     # clb 7,a             ;fb         Accumulator Bit
     Opcode(number=0xfb,
