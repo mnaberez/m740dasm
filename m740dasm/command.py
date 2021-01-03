@@ -22,7 +22,7 @@ def main():
 
     memory = Memory(rom)
 
-    entry_points = []
+    entry_points = [0xa4d1]
 
     vectors = [
         # brk
