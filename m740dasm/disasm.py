@@ -62,6 +62,7 @@ class Instruction(object):
 
     @property
     def target_address(self):
+        # TODO does not know about sp_addr; see note about jsr \0xffaa in trace.py
         for addr in (self.rel_addr, self.abs_addr):
             if addr is not None:
                 return addr
