@@ -37,10 +37,7 @@ label8:
     clb 0,0xaa          ;1f aa      Zero Page Bit
     jsr 0xaabb          ;20 bb aa   Absolute
     and [0xaa,x]        ;21 aa      Indirect X
-
-;TODO reassembly fails
-;    jsr \0xffaa         ;22         Special Page
-
+    jsr \0xffaa         ;22         Special Page
 label9:
     bbs 1,a,label9      ;23 fe      Accumulator Bit Relative
     bit 0xaa            ;24 aa      Zero Page
