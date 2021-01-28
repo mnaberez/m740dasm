@@ -22,8 +22,12 @@ def main():
 
     memory = Memory(rom)
 
-    entry_points = [0xa4d1]
+    # addresses known to contain code
+    entry_points = [
+    ]
 
+    # address of hardware vectors or other locations that contain
+    # a 2-byte address of code
     vectors = [
         # brk
         0xffdc,
