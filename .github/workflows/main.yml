@@ -39,4 +39,4 @@ jobs:
 
     - name: Disassemble and reassemble the test program
       run: |
-        make -C docs/testprog all
+        make -C m740dasm/tests/end_to_end all
