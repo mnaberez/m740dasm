@@ -10,14 +10,14 @@ class Tracer(object):
 
         for address in entry_points:
             if address not in traceable_range:
-                msg = "Address 0x%04X outside of traceable range"
+                msg = "Entry point address 0x%04X is outside of traceable range"
                 raise ValueError(msg % address)
             self.memory.annotate_entry_point(address)
             self.enqueue_address(address)
 
         for address in vectors:
             if address not in traceable_range:
-                msg = "Vector address 0x%04X outside of traceable range"
+                msg = "Vector address 0x%04X is outside of traceable range"
                 raise ValueError(msg % address)
             self.enqueue_vector(address)
 
