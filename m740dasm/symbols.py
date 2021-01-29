@@ -141,7 +141,7 @@ M3886_SYMBOLS = {
 
     # vectors
     0xfffc: ("RESET",    "Reset vector"),
-    0xfffa: ("INT_FFFA", "INT0 / Input buffer ful (IBF)"),
+    0xfffa: ("INT_FFFA", "INT0 / Input buffer full (IBF)"),
     0xfff8: ("INT_FFF8", "INT1 / Output buffer empty (OBE)"),
     0xfff6: ("INT_FFF6", "Serial I/O 1 reception"),
     0xfff4: ("INT_FFF4", "Serial I/O 2 transmission / SCL, SDA"),
