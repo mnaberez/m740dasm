@@ -118,6 +118,8 @@ class Printer(object):
             d['{abs}'] = self.format_abs_address(inst.abs_addr)
         if inst.rel_addr is not None:
             d['{rel}'] = self.format_rel_address(inst.rel_addr)
+        if inst.sp_addr is not None:
+            d['{sp}'] = self.format_sp_address(inst.sp_addr)
         if inst.zp_addr is not None:
             d['{zp}'] = self.format_zp_address(inst.zp_addr)
 
@@ -132,7 +134,15 @@ class Printer(object):
             return name
         return '0x%04x' % address
 
+    def format_sp_address(self, address):
+        assert address & 0xFF00 == 0xFF00 # special page range
+        if address in self.symbol_table.symbols:
+            name, comment = self.symbol_table.symbols[address]
+            return name
+        return '0x%04x' % address
+
     def format_zp_address(self, address):
+        assert address & 0xFF00 == 0 # zero page range
         if address in self.symbol_table.symbols:
             name, comment = self.symbol_table.symbols[address]
             return name
