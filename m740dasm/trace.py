@@ -101,12 +101,8 @@ class Tracer(object):
 
         # enqueue the subroutine called
         new_ps.pc = inst.target_address
-        if inst.target_address is not None:
-            # TODO this is a bug; target_address should never be None
-            # caused by: jsr \0xffaa
-            # fix that and then remove the "if" conditional above
-            self.memory.annotate_call_target(inst.target_address)
-            self.enqueue_processor_state(new_ps)
+        self.memory.annotate_call_target(inst.target_address)
+        self.enqueue_processor_state(new_ps)
 
     def _trace_generic_indirect_unconditional_jump(self, inst, ps, new_ps):
         pass

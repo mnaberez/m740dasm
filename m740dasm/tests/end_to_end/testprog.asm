@@ -37,7 +37,7 @@ label8:
     clb 0,0xaa          ;1f aa      Zero Page Bit
     jsr 0xaabb          ;20 bb aa   Absolute
     and [0xaa,x]        ;21 aa      Indirect X
-    jsr \0xffaa         ;22 aa      Special Page
+    jsr \sub_ff80       ;22 80      Special Page
 label9:
     bbs 1,a,label9      ;23 fe      Accumulator Bit Relative
     bit 0xaa            ;24 aa      Zero Page
@@ -376,8 +376,16 @@ inst_fa:
 inst_fc:
     .byte 0xfc          ;fc         Illegal
 
+    ;Special Page ===========================================================
+
+    .org 0xff80
+
+sub_ff80:
+    rts
+
     ;Hardware Vectors =======================================================
 
     .org 0xfffc
+
     .word reset         ;reset vector
     .word 0             ;unused
