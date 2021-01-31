@@ -22,9 +22,14 @@ class SymbolTable(object):
                     self.symbols[address] = ('lab_%04x' % address, '')
 
     def generate_data_symbols(self, memory, start_address):
-        # TODO implementation
-        pass
-
+        for _, inst in memory.iter_instructions():
+            address = inst.data_ref_address
+            if address is None:
+                continue
+            if address in self.symbols:
+                continue
+            if memory.is_single_byte_or_start_of_multibyte(address):
+                self.symbols[address] = ('mem_%04x' % address, '')
 
 M3886_SYMBOLS = {
     # i/o
