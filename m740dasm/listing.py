@@ -39,8 +39,8 @@ class Printer(object):
     def print_symbols(self):
         used_symbols = set()
         for address, inst in self.memory.iter_instructions():
-            if inst.address in self.symbol_table.symbols:
-                used_symbols.add(inst.address)
+            if inst.data_ref_address in self.symbol_table.symbols:
+                used_symbols.add(inst.data_ref_address)
 
         for address, target in self.memory.iter_vectors():
             if target in self.symbol_table.symbols:

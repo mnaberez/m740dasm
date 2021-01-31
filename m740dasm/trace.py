@@ -83,13 +83,13 @@ class Tracer(object):
 
         # take the branch
         new_ps = new_ps.copy()
-        new_ps.pc = inst.target_address
+        new_ps.pc = inst.code_ref_address
         self.enqueue_processor_state(new_ps)
-        self.memory.annotate_jump_target(inst.target_address)
+        self.memory.annotate_jump_target(inst.code_ref_address)
 
     def _trace_generic_unconditional_jump(self, inst, ps, new_ps):
-        self.memory.annotate_jump_target(inst.target_address)
-        new_ps.pc = inst.target_address
+        self.memory.annotate_jump_target(inst.code_ref_address)
+        new_ps.pc = inst.code_ref_address
         self.enqueue_processor_state(new_ps)
 
     def _trace_generic_subroutine_call(self, inst, ps, new_ps):
@@ -100,8 +100,8 @@ class Tracer(object):
         self.enqueue_processor_state(new_ps2)
 
         # enqueue the subroutine called
-        new_ps.pc = inst.target_address
-        self.memory.annotate_call_target(inst.target_address)
+        new_ps.pc = inst.code_ref_address
+        self.memory.annotate_call_target(inst.code_ref_address)
         self.enqueue_processor_state(new_ps)
 
     def _trace_generic_indirect_unconditional_jump(self, inst, ps, new_ps):

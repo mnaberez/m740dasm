@@ -1,5 +1,6 @@
 from m740dasm.tables import (
     AddressModes,
+    FlowTypes,
     Opcodes,
     InstructionLengths,
     )
@@ -55,16 +56,48 @@ class Instruction(object):
         )
 
     @property
-    def address(self):
-        for addr in (self.abs_addr, self.zp_addr, self.rel_addr, self.sp_addr):
-            if addr is not None:
-                return addr
+    def data_ref_address(self):
+        """Address referenced for a data operation.  If an instruction reads
+           memory as part of a computed jump, that is also considered a data
+           operation.  For all modes, the address returned is resolved to an
+           absolute address.  If the instruction does not read data from
+           memory, None is returned."""
+        if self.addr_mode == AddressModes.Absolute:
+            if self.flow_type == FlowTypes.Continue:
+                return self.abs_addr
+        elif self.addr_mode in (AddressModes.AbsoluteX,
+                                AddressModes.AbsoluteY,
+                                AddressModes.IndirectAbsolute):
+            return self.abs_addr
+        elif self.addr_mode in (AddressModes.IndirectX,
+                                AddressModes.IndirectY,
+                                AddressModes.ZeroPage,
+                                AddressModes.ZeroPageBit,
+                                AddressModes.ZeroPageBitRelative,
+                                AddressModes.ZeroPageImmediate,
+                                AddressModes.ZeroPageIndirect,
+                                AddressModes.ZeroPageX,
+                                AddressModes.ZeroPageY):
+            return self.zp_addr
+        return None
 
     @property
-    def target_address(self):
-        for addr in (self.rel_addr, self.sp_addr, self.abs_addr):
-            if addr is not None:
-                return addr
+    def code_ref_address(self):
+        """Address referenced for a branch / jump / call.  For all modes, the
+           address returned is resolved to an absolute address.  It the instruction
+           does not branch, or is a computed branch, None is returned."""
+        if self.addr_mode == AddressModes.Absolute:
+            if self.flow_type in (FlowTypes.SubroutineCall,
+                                  FlowTypes.UnconditionalJump):
+                return self.abs_addr
+        elif self.addr_mode in (AddressModes.AccumulatorBitRelative,
+                                AddressModes.Relative,
+                                AddressModes.ZeroPageBitRelative):
+            return self.rel_addr
+        elif self.addr_mode == AddressModes.SpecialPage:
+            return self.sp_addr
+        return None
+
 
 def disassemble_inst(memory, pc):
     opcode = Opcodes[memory[pc]]
