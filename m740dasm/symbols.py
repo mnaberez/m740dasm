@@ -13,12 +13,12 @@ class SymbolTable(object):
     def __getitem__(self, address):
         return self._symbols_by_address[address]
 
-    def generate_symbols(self, memory, start_address):
-        self._generate_code_symbols(memory, start_address)
-        self._generate_data_symbols(memory, start_address)
+    def generate_symbols(self, memory):
+        self._generate_code_symbols(memory)
+        self._generate_data_symbols(memory)
 
-    def _generate_code_symbols(self, memory, start_address):
-        for address in range(start_address, len(memory)):
+    def _generate_code_symbols(self, memory):
+        for address, inst in memory.iter_instructions():
             if address in self._symbols_by_address:
                 pass # do not overwrite existing symbols
             elif memory.is_call_target(address):
@@ -28,7 +28,7 @@ class SymbolTable(object):
                 if memory.is_instruction_start(address):
                     self._add_new_symbol(address, 'lab_%04x' % address)
 
-    def _generate_data_symbols(self, memory, start_address):
+    def _generate_data_symbols(self, memory):
         for _, inst in memory.iter_instructions():
             address = inst.data_ref_address
             if address is None:
