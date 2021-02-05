@@ -27,12 +27,7 @@ class Tracer(object):
         while len(self.queue):
             ps = self.queue.pop() # current processor state
 
-            # TODO
-            #try:
             inst = disassemble_func(self.memory, ps.pc)
-            #except IllegalInstructionError:
-            #    self.memory.annotate_illegal_instruction(ps.pc)
-            #    continue
 
             if "LOG" in os.environ: # XXX hack
                 self._log(inst, ps)
