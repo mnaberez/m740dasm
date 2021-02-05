@@ -1,6 +1,6 @@
 import os
 from operator import attrgetter
-from m740dasm.tables import FlowTypes#, IllegalInstructionError
+from m740dasm.tables import FlowTypes
 
 class Tracer(object):
     def __init__(self, memory, entry_points, vectors, traceable_range):

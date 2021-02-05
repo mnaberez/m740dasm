@@ -39,19 +39,19 @@ class Printer(object):
     def print_symbols(self):
         used_symbols = set()
         for address, inst in self.memory.iter_instructions():
-            if inst.data_ref_address in self.symbol_table.symbols:
+            if inst.data_ref_address in self.symbol_table:
                 used_symbols.add(inst.data_ref_address)
 
         for address, target in self.memory.iter_vectors():
-            if target in self.symbol_table.symbols:
+            if target in self.symbol_table:
                 used_symbols.add(target)
 
         for address in sorted(used_symbols):
             if address < self.start_address:
-                name, comment = self.symbol_table.symbols[address]
-                line = ("    %s = 0x%02x" % (name, address)).ljust(28)
-                if comment:
-                    line += ";%s" % comment
+                symbol = self.symbol_table[address]
+                line = ("    %s = 0x%02x" % (symbol.name, symbol.address)).ljust(28)
+                if symbol.comment:
+                    line += ";%s" % symbol.comment
                 print(line)
         print('')
 
@@ -59,12 +59,12 @@ class Printer(object):
         typ = self.memory.types[address]
         if self.last_line_type is not None:
             if typ != self.last_line_type:
-                if address not in self.symbol_table.symbols:
+                if address not in self.symbol_table:
                     print('')
         self.last_line_type = typ
 
     def print_label(self, address):
-        if address in self.symbol_table.symbols:
+        if address in self.symbol_table:
             print("\n%s:" % self.format_abs_address(address))
 
     def print_data_line(self, address):
@@ -83,9 +83,10 @@ class Printer(object):
         target = self.format_abs_address(target)
         line = ('    .word %s' % target).ljust(28)
         line += ';%04x  %02x %02x       VECTOR' % (address, self.memory[address], self.memory[address+1])
-        name, comment = self.symbol_table.symbols.get(address, ('',''))
-        if comment:
-            line += ' ' + comment
+        if address in self.symbol_table:
+            comment = self.symbol_table[address].comment
+            if comment:
+                line += ' ' + comment
         print(line)
 
     def print_mode_byte_line(self, address):
@@ -129,28 +130,24 @@ class Printer(object):
         return disasm
 
     def format_abs_address(self, address):
-        if address in self.symbol_table.symbols:
-            name, comment = self.symbol_table.symbols[address]
-            return name
+        if address in self.symbol_table:
+            return self.symbol_table[address].name
         return '0x%04x' % address
 
     def format_sp_address(self, address):
         assert address & 0xFF00 == 0xFF00 # special page range
-        if address in self.symbol_table.symbols:
-            name, comment = self.symbol_table.symbols[address]
-            return name
+        if address in self.symbol_table:
+            return self.symbol_table[address].name
         return '0x%04x' % address
 
     def format_zp_address(self, address):
         assert address & 0xFF00 == 0 # zero page range
-        if address in self.symbol_table.symbols:
-            name, comment = self.symbol_table.symbols[address]
-            return name
+        if address in self.symbol_table:
+            return self.symbol_table[address].name
         return '0x%02x' % address
 
     def format_rel_address(self, address):
         # TODO should print relative to PC if no symbol found
-        if address in self.symbol_table.symbols:
-            name, comment = self.symbol_table.symbols[address]
-            return name
+        if address in self.symbol_table:
+            return self.symbol_table[address].name
         return '0x%02x' % address
