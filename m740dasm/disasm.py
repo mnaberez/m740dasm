@@ -66,20 +66,29 @@ class Instruction(object):
         return data
 
     _disasm_formats = (
-        ('opcode',    '{opc}', '0x%02x'),
-        ('zp_addr',   '{zp}',  '0x%02x'),
-        ('sp_addr',   '{sp}',  '0x%04x'),
-        ('abs_addr',  '{abs}', '0x%04x'),
-        ('rel_addr',  '{rel}', '0x%04x'),
-        ('immediate', '{imm}', '0x%02x'),
+        ('opcode',    '{opc}', '0x%02x', False),
+        ('immediate', '{imm}', '0x%02x', False),
+        ('zp_addr',   '{zp}',  '0x%02x', True),
+        ('sp_addr',   '{sp}',  '0x%04x', True),
+        ('abs_addr',  '{abs}', '0x%04x', True),
+        ('rel_addr',  '{rel}', '0x%04x' ,True),
         )
 
     def __str__(self):
+        return self.to_string()
+
+    def to_string(self, symbol_table=None):
+        """Render this instruction to assembly language ("jsr 0xffd2").  If a
+           SymbolTable is passed and the instruction uses an address in the
+           table, the name will be rendered instead ("jsr chrout")."""
         disasm = self.disasm_template
-        for attr, tpl, fmt in self._disasm_formats:
-            v = getattr(self, attr)
-            if v is not None:
-                disasm = disasm.replace(tpl, fmt % v)
+        for attribute, placeholder, format, is_address in self._disasm_formats:
+            value = getattr(self, attribute)
+            if value is not None:
+                if is_address and symbol_table and (value in symbol_table):
+                    disasm = disasm.replace(placeholder, symbol_table[value].name)
+                else:
+                    disasm = disasm.replace(placeholder, format % value)
         return disasm
 
     @property

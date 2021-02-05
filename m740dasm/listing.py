@@ -100,7 +100,7 @@ class Printer(object):
         print(line)
 
     def print_instruction_line(self, address, inst):
-        disasm = self.format_instruction(inst)
+        disasm = inst.to_string(self.symbol_table)
         hexdump = (' '.join([ '%02x' % h for h in inst.all_bytes ])).ljust(9)
 
         line = '    ' + disasm.ljust(24)
@@ -113,44 +113,7 @@ class Printer(object):
 
         print(line)
 
-    def format_instruction(self, inst):
-        d = {'{opc}': '0x%02x' % inst.opcode}
-
-        if inst.immediate is not None:
-            d['{imm}'] = '0x%02x' % inst.immediate
-        if inst.abs_addr is not None:
-            d['{abs}'] = self.format_abs_address(inst.abs_addr)
-        if inst.rel_addr is not None:
-            d['{rel}'] = self.format_rel_address(inst.rel_addr)
-        if inst.sp_addr is not None:
-            d['{sp}'] = self.format_sp_address(inst.sp_addr)
-        if inst.zp_addr is not None:
-            d['{zp}'] = self.format_zp_address(inst.zp_addr)
-
-        disasm = inst.disasm_template
-        for k, v in d.items():
-            disasm = disasm.replace(k, v)
-        return disasm
-
     def format_abs_address(self, address):
         if address in self.symbol_table:
             return self.symbol_table[address].name
         return '0x%04x' % address
-
-    def format_sp_address(self, address):
-        assert address & 0xFF00 == 0xFF00 # special page range
-        if address in self.symbol_table:
-            return self.symbol_table[address].name
-        return '0x%04x' % address
-
-    def format_zp_address(self, address):
-        assert address & 0xFF00 == 0 # zero page range
-        if address in self.symbol_table:
-            return self.symbol_table[address].name
-        return '0x%02x' % address
-
-    def format_rel_address(self, address):
-        # TODO should print relative to PC if no symbol found
-        if address in self.symbol_table:
-            return self.symbol_table[address].name
-        return '0x%02x' % address
