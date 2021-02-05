@@ -1,27 +1,52 @@
 from m740dasm.tables import (
     AddressModes,
     FlowTypes,
-    Opcodes,
     InstructionLengths,
+    Opcodes,
     )
 
+def disassemble_inst(memory, pc):
+    return Instruction.disassemble(memory, pc)
 
 class Instruction(object):
-    __slots__ = ('disasm_template', 'addr_mode', 'opcode', 'operands',
+    __slots__ = ('disasm_template', 'location', 'addr_mode', 'opcode', 'operands',
                  'zp_addr', 'immediate', 'abs_addr', 'sp_addr', 'rel_addr',
                  'flow_type')
 
+    @classmethod
+    def disassemble(klass, memory, pc):
+        """Disassemble the instruction in memory at pc and return
+        an Instruction instance for it."""
+        opcode = Opcodes[memory[pc]]
+        pc = (pc + 1) & 0xFFFF
+
+        instlen = InstructionLengths[opcode.addr_mode]
+        operands = bytearray()
+        for i in range(instlen - 1):
+            operands.append(memory[pc])
+            pc = (pc + 1) & 0xFFFF
+
+        return klass(
+            disasm_template=opcode.disasm_template,
+            location=pc,
+            addr_mode=opcode.addr_mode,
+            opcode=opcode.number,
+            flow_type=opcode.flow_type,
+            operands=operands,
+            )
+
     def __init__(self, **kwargs):
-        self.disasm_template = '' # "lda {abs}"
-        self.addr_mode = None     # addressing mode
-        self.zp_addr = None       # zero page address
-        self.abs_addr = None      # absolute address
-        self.sp_addr = None       # special page address
-        self.rel_addr = None      # resolved relative address
-        self.immediate = None     # immediate value
+        self.location = None      # start address of this instruction
         self.opcode = None        # opcode byte
         self.operands = ()        # operand bytes
-        self.flow_type = None
+        self.disasm_template = '' # "lda {abs}"
+        self.addr_mode = None     # addressing mode
+        self.flow_type = None     # flow type
+        self.zp_addr = None       # zero page address
+        self.abs_addr = None      # absolute address
+        self.sp_addr = None       # resolved special page address
+        self.rel_addr = None      # resolved relative address
+        self.immediate = None     # immediate value
 
         for k, v in kwargs.items():
             if hasattr(self, k):
@@ -29,16 +54,10 @@ class Instruction(object):
             else:
                 raise KeyError(k)
 
+        self._parse_operands()
+
     def __len__(self):
         return 1 + len(self.operands)
-
-    def __str__(self):
-        disasm = self.disasm_template
-        for attr, tpl, fmt in self._disasm_formats:
-            v = getattr(self, attr)
-            if v is not None:
-                disasm = disasm.replace(tpl, fmt % v)
-        return disasm
 
     @property
     def all_bytes(self):
@@ -54,6 +73,14 @@ class Instruction(object):
         ('rel_addr',  '{rel}', '0x%04x'),
         ('immediate', '{imm}', '0x%02x'),
         )
+
+    def __str__(self):
+        disasm = self.disasm_template
+        for attr, tpl, fmt in self._disasm_formats:
+            v = getattr(self, attr)
+            if v is not None:
+                disasm = disasm.replace(tpl, fmt % v)
+        return disasm
 
     @property
     def data_ref_address(self):
@@ -98,71 +125,50 @@ class Instruction(object):
             return self.sp_addr
         return None
 
+    def _parse_operands(self):
+        if self.addr_mode in (AddressModes.Illegal,
+                              AddressModes.Implied,
+                              AddressModes.AccumulatorBit):
+            pass
 
-def disassemble_inst(memory, pc):
-    opcode = Opcodes[memory[pc]]
-    pc = (pc + 1) & 0xFFFF
+        elif self.addr_mode in (AddressModes.Absolute,
+                                AddressModes.AbsoluteX,
+                                AddressModes.AbsoluteY,
+                                AddressModes.IndirectAbsolute):
+            self.abs_addr = self.operands[0] + (self.operands[1] << 8)
 
-    instlen = InstructionLengths[opcode.addr_mode]
-    operands = bytearray()
-    for i in range(instlen - 1):
-        operands.append(memory[pc])
-        pc = (pc + 1) & 0xFFFF
+        elif self.addr_mode == AddressModes.Immediate:
+            self.immediate = self.operands[0]
 
-    inst = Instruction(
-        disasm_template=opcode.disasm_template,
-        addr_mode=opcode.addr_mode,
-        opcode=opcode.number,
-        flow_type=opcode.flow_type,
-        operands=operands,
-        )
+        elif self.addr_mode in (AddressModes.IndirectX,
+                                AddressModes.ZeroPageIndirect,
+                                AddressModes.ZeroPage,
+                                AddressModes.ZeroPageBit,
+                                AddressModes.ZeroPageX,
+                                AddressModes.ZeroPageY,
+                                AddressModes.IndirectY):
+            self.zp_addr = self.operands[0]
 
-    if inst.addr_mode in (AddressModes.Illegal,
-                          AddressModes.Implied,
-                          AddressModes.AccumulatorBit):
-        pass
+        elif self.addr_mode == AddressModes.ZeroPageImmediate:
+            self.immediate = self.operands[0]
+            self.zp_addr = self.operands[1]
 
-    elif inst.addr_mode in (AddressModes.Absolute,
-                            AddressModes.AbsoluteX,
-                            AddressModes.AbsoluteY,
-                            AddressModes.IndirectAbsolute):
-        inst.abs_addr = operands[0] + (operands[1] << 8)
+        elif self.addr_mode == AddressModes.SpecialPage:
+            self.sp_addr = 0xFF00 + self.operands[0]
 
-    elif inst.addr_mode == AddressModes.Immediate:
-        inst.immediate = operands[0]
+        elif self.addr_mode in (AddressModes.Relative,
+                                AddressModes.AccumulatorBitRelative):
+            self.rel_addr = _resolve_rel(self.location, self.operands[0])
 
-    elif inst.addr_mode in (AddressModes.IndirectX,
-                            AddressModes.ZeroPageIndirect,
-                            AddressModes.ZeroPage,
-                            AddressModes.ZeroPageBit,
-                            AddressModes.ZeroPageX,
-                            AddressModes.ZeroPageY,
-                            AddressModes.IndirectY):
-        inst.zp_addr = operands[0]
+        elif self.addr_mode in (AddressModes.Relative,
+                                AddressModes.ZeroPageBitRelative):
+            self.zp_addr = self.operands[0]
+            self.rel_addr = _resolve_rel(self.location, self.operands[1])
 
-    elif inst.addr_mode == AddressModes.ZeroPageImmediate:
-        inst.immediate = operands[0]
-        inst.zp_addr = operands[1]
-
-    elif inst.addr_mode == AddressModes.SpecialPage:
-        inst.sp_addr = 0xFF00 + operands[0]
-
-    elif inst.addr_mode in (AddressModes.Relative,
-                            AddressModes.AccumulatorBitRelative):
-        inst.rel_addr = _resolve_rel(pc, operands[0])
-
-    elif inst.addr_mode in (AddressModes.Relative,
-                            AddressModes.ZeroPageBitRelative):
-        inst.zp_addr = operands[0]
-        inst.rel_addr = _resolve_rel(pc, operands[1])
-
-    else:
-        msg = "Unhandled addressing mode %r at 0x%04x" % (
-            inst.addr_mode, pc-1)
-        raise NotImplementedError(msg) # always a bug
-
-    return inst
-
+        else:
+            msg = "Unhandled addressing mode %r at 0x%04x" % (
+                self.addr_mode, self.location)
+            raise NotImplementedError(msg) # always a bug
 
 def _resolve_rel(pc, displacement):
     if displacement & 0x80:
