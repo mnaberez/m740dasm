@@ -5,7 +5,7 @@ from m740dasm.tables import (
     Opcodes,
     )
 
-def disassemble_inst(memory, pc):
+def disassemble(memory, pc):
     return Instruction.disassemble(memory, pc)
 
 class Instruction(object):

@@ -5,7 +5,7 @@ Usage: m740dasm <filename.bin>
 
 import sys
 
-from m740dasm.disasm import disassemble_inst
+from m740dasm.disasm import disassemble
 from m740dasm.trace import Tracer
 from m740dasm.memory import Memory
 from m740dasm.listing import Printer
@@ -40,7 +40,7 @@ def main():
 
     traceable_range = range(start_address, start_address + len(rom) + 1)
     tracer = Tracer(memory, entry_points, vectors, traceable_range)
-    tracer.trace(disassemble_inst)
+    tracer.trace(disassemble)
 
     symbol_table = SymbolTable(M3886_SYMBOLS)
     symbol_table.generate(memory, start_address) # xxx should pass traceable_range
