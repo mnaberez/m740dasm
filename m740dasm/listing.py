@@ -101,12 +101,15 @@ class Printer(object):
 
     def print_instruction_line(self, address, inst):
         disasm = self.format_instruction(inst)
-        hexdump = (' '.join([ '%02x' % h for h in inst.all_bytes ])).ljust(8)
+        hexdump = (' '.join([ '%02x' % h for h in inst.all_bytes ])).ljust(9)
 
         line = '    ' + disasm.ljust(24)
         if not line.endswith(' '):
             line += ' '
         line += ';%04x  %s' % (address, hexdump)
+
+        if inst.illegal:
+            line += "Illegal instruction"
 
         print(line)
 

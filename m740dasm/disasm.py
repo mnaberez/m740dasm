@@ -125,6 +125,11 @@ class Instruction(object):
             return self.sp_addr
         return None
 
+    @property
+    def illegal(self):
+        """Returns true if this is an illegal instruction."""
+        return self.addr_mode == AddressModes.Illegal
+
     def _parse_operands(self):
         if self.addr_mode in (AddressModes.Illegal,
                               AddressModes.Implied,
