@@ -1,5 +1,3 @@
-from m740dasm.tables import AddressModes
-
 class SymbolTable(object):
     def __init__(self, initial_symbols=None):
         if initial_symbols is None:
