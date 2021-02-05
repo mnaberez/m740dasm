@@ -1,10 +1,13 @@
+
 class SymbolTable(object):
-    def __init__(self, initial_symbols=None):
-        if initial_symbols is None:
-            initial_symbols = []
+    """A mapping of addresses to Symbol objects"""
+
+    def __init__(self, symbols=None):
+        if symbols is not None:
+            symbols = []
 
         self._symbols_by_address = {}
-        for symbol in initial_symbols:
+        for symbol in symbols:
             self._symbols_by_address[symbol.address] = symbol
 
     def __contains__(self, address):
@@ -13,13 +16,36 @@ class SymbolTable(object):
     def __getitem__(self, address):
         return self._symbols_by_address[address]
 
+    def __setitem__(self, address, symbol):
+        self._symbols_by_address[address] = symbol
+
     def generate_symbols(self, memory):
+        SymbolGenerator(self).generate(memory)
+
+
+class Symbol(object):
+    """An address in memory along with its associated name and comment"""
+
+    def __init__(self, address, name, comment):
+        self.address = address
+        self.name    = name
+        self.comment = comment
+
+
+class SymbolGenerator(object):
+    """Given a SymbolTable and Memory, analyze the code and then populate
+    the symbol table with automatic symbols for code and data."""
+
+    def __init__(self, symbol_table):
+        self._symbol_table = symbol_table
+
+    def generate(self, memory):
         self._generate_code_symbols(memory)
         self._generate_data_symbols(memory)
 
     def _generate_code_symbols(self, memory):
         for address, inst in memory.iter_instructions():
-            if address in self._symbols_by_address:
+            if address in self._symbol_table:
                 pass # do not overwrite existing symbols
             elif memory.is_call_target(address):
                 if memory.is_instruction_start(address):
@@ -33,21 +59,14 @@ class SymbolTable(object):
             address = inst.data_ref_address
             if address is None:
                 continue
-            if address in self._symbols_by_address:
+            if address in self._symbol_table:
                 continue # do not overwrite existing symbols
             if memory.is_single_byte_or_start_of_multibyte(address):
                 self._add_new_symbol(address, 'mem_%04x' % address)
 
     def _add_new_symbol(self, address, name):
         symbol = Symbol(address, name, '')
-        self._symbols_by_address[address] = symbol
-
-
-class Symbol(object):
-    def __init__(self, address, name, comment):
-        self.address = address
-        self.name    = name
-        self.comment = comment
+        self._symbol_table[address] = symbol
 
 
 M3886_SYMBOLS = [
