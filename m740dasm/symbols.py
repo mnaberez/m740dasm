@@ -3,7 +3,7 @@ class SymbolTable(object):
     """A mapping of addresses to Symbol objects"""
 
     def __init__(self, symbols=None):
-        if symbols is not None:
+        if symbols is None:
             symbols = []
 
         self._symbols_by_address = {}
@@ -24,49 +24,79 @@ class SymbolTable(object):
 
 
 class Symbol(object):
-    """An address in memory along with its associated name and comment"""
+    """An address in memory along with its associated name and comment.
+    If the symbol was not specified directly by the user, it is
+    an "weak" symbol and may be changed or removed."""
 
-    def __init__(self, address, name, comment):
-        self.address = address
-        self.name    = name
-        self.comment = comment
+    def __init__(self, address, name, comment='', weak=False):
+        self.address   = address
+        self.name      = name
+        self.comment   = comment
+        self.weak      = weak
 
 
 class SymbolGenerator(object):
     """Given a SymbolTable and Memory, analyze the code and then populate
-    the symbol table with automatic symbols for code and data."""
+    the symbol table with weak symbols for code and data."""
 
     def __init__(self, symbol_table):
         self._symbol_table = symbol_table
 
     def generate(self, memory):
+        self._generate_entry_point_symbols(memory)
         self._generate_code_symbols(memory)
         self._generate_data_symbols(memory)
 
-    def _generate_code_symbols(self, memory):
+    def _generate_entry_point_symbols(self, memory):
+        """Generate symbols for addresses known to contain code but are
+        not the targets of jump or call instructions."""
         for address, inst in memory.iter_instructions():
-            if address in self._symbol_table:
-                pass # do not overwrite existing symbols
+            if not self._can_set_symbol(address):
+                continue
+            if memory.is_entry_point(address):
+                self._set_weak_symbol(address, _Prefixes.Label)
+
+    def _generate_code_symbols(self, memory):
+        """Generate symbols for jump and call targets."""
+        for address, inst in memory.iter_instructions():
+            if not self._can_set_symbol(address):
+                continue
+            elif not memory.is_instruction_start(address):
+                continue
             elif memory.is_call_target(address):
-                if memory.is_instruction_start(address):
-                    self._add_new_symbol(address, 'sub_%04x' % address)
+                self._set_weak_symbol(address, _Prefixes.Subroutine)
             elif memory.is_jump_target(address):
-                if memory.is_instruction_start(address):
-                    self._add_new_symbol(address, 'lab_%04x' % address)
+                self._set_weak_symbol(address, _Prefixes.Label)
 
     def _generate_data_symbols(self, memory):
+        """Generate symbols for memory used in data operations."""
         for _, inst in memory.iter_instructions():
             address = inst.data_ref_address
             if address is None:
                 continue
-            if address in self._symbol_table:
-                continue # do not overwrite existing symbols
+            if not self._can_set_symbol(address):
+                continue
             if memory.is_single_byte_or_start_of_multibyte(address):
-                self._add_new_symbol(address, 'mem_%04x' % address)
+                self._set_weak_symbol(address, _Prefixes.Memory)
 
-    def _add_new_symbol(self, address, name):
-        symbol = Symbol(address, name, '')
+    def _can_set_symbol(self, address):
+        """A symbol can be set if one is not there, or if a weak one
+        is there.  User-provided symbols are never overwritten."""
+        if address not in self._symbol_table:
+            return True
+        return self._symbol_table[address].weak
+
+    def _set_weak_symbol(self, address, prefix):
+        """Set an "weak" symbol at the address."""
+        name = "%s_%04x" % (prefix, address)
+        symbol = Symbol(address, name, comment='', weak=True)
         self._symbol_table[address] = symbol
+
+
+class _Prefixes:
+    Label =      "lab"
+    Subroutine = "sub"
+    Memory =     "mem"
 
 
 M3886_SYMBOLS = [
