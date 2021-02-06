@@ -56,8 +56,12 @@ class FlowTypes(object):
     SubroutineReturn = 7
 
 class Opcode(object):
+    __slots__ = ("number", "disasm_template", "addr_mode", "flow_type")
+
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
+            if k not in self.__slots__:
+                raise KeyError(k)
             setattr(self, k, v)
 
 Opcodes = (
