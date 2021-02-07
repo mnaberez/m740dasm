@@ -76,6 +76,9 @@ class SymbolGenerator(object):
                 continue
             if not self._can_set_symbol(address):
                 continue
+            if memory.is_instruction_start(address):
+                if address in self._symbol_table:
+                    continue # do not overwrite a weak code symbol
             if memory.is_single_byte_or_start_of_multibyte(address):
                 self._set_weak_symbol(address, _Prefixes.Memory)
 
