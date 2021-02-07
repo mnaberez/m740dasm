@@ -26,7 +26,7 @@ class SymbolTable(object):
 class Symbol(object):
     """An address in memory along with its associated name and comment.
     If the symbol was not specified directly by the user, it is
-    an "weak" symbol and may be changed or removed."""
+    a "weak" symbol and may be changed or removed."""
 
     def __init__(self, address, name, comment='', weak=False):
         self.address   = address
@@ -90,7 +90,7 @@ class SymbolGenerator(object):
         return self._symbol_table[address].weak
 
     def _set_weak_symbol(self, address, prefix):
-        """Set an "weak" symbol at the address."""
+        """Set a "weak" symbol at the address."""
         name = "%s_%04x" % (prefix, address)
         symbol = Symbol(address, name, comment='', weak=True)
         self._symbol_table[address] = symbol
