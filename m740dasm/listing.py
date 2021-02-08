@@ -27,6 +27,9 @@ class Printer(object):
                 elif self.memory.is_data(address):
                     self.print_data_line(address)
                     address += 1
+                elif self.memory.is_unknown(address):
+                    self.print_unknown_line(address)
+                    address += 1
                 else:
                     msg = "Unhandled location type %r at 0x%04x" % (
                         self.memory.types[address], address)
@@ -68,8 +71,19 @@ class Printer(object):
             print("\n%s:" % self.format_abs_address(address))
 
     def print_data_line(self, address):
+        self._print_byte_line(address, "DATA")
+
+    def print_unknown_line(self, address):
+        self._print_byte_line(address, "UNKNOWN")
+
+    def _print_byte_line(self, address, tag):
         line = ('    .byte 0x%02x' % self.memory[address]).ljust(28)
-        line += ';%04x  %02x          DATA %s ' % (address, self.memory[address], self._data_byte_repr(self.memory[address]))
+        line += ';%04x  %02x          %s %s ' % (
+            address,
+            self.memory[address],
+            tag,
+            self._data_byte_repr(self.memory[address])
+            )
         print(line)
 
     def _data_byte_repr(self, b):

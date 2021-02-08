@@ -55,7 +55,7 @@ class Tracer(object):
                 handler = self._generic_handlers[inst.flow_type]
             handler(self, inst, ps, new_ps)
 
-        self.mark_unknown_memory_as_data()
+        self.mark_data_references()
 
     def _log(self, inst, ps):
         print("TRACE " + str(ps).ljust(24) + str(inst))
@@ -147,10 +147,25 @@ class Tracer(object):
                 self.memory.annotate_jump_target(target)
                 self.enqueue_address(target)
 
-    def mark_unknown_memory_as_data(self):
+    def mark_data_references(self):
+        # mark addresses used in instruction data references as data
+        for _, inst in self.memory.iter_instructions():
+            # the data reference may actually be an address of code, so we
+            # only mark it if it is unknown
+            if inst.data_ref_address is not None:
+                if self.memory.is_unknown(inst.data_ref_address):
+                    self.memory.set_data(inst.data_ref_address)
+
+        # when an instruction uses indexed addressing, we know the start
+        # address of the data from data_ref_address but we do not know the
+        # length of the data.  we assume all unknown bytes that follow the
+        # data start address are part of the same chunk of data.
         for address in self.traceable_range:
-            if self.memory.is_unknown(address):
-                self.memory.set_data(address)
+            if address < 0xffff: # XXX hack, < 0xffff should not be needed
+                if self.memory.is_data(address):
+                    next_address = (address + 1) & 0xFFFF
+                    if self.memory.is_unknown(next_address):
+                        self.memory.set_data(next_address)
 
 
 class TraceQueue(object):
