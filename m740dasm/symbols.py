@@ -19,8 +19,8 @@ class SymbolTable(object):
     def __setitem__(self, address, symbol):
         self._symbols_by_address[address] = symbol
 
-    def generate_symbols(self, memory):
-        SymbolGenerator(self).generate(memory)
+    def analyze_symbols(self, memory):
+        SymbolCreatingAnalyzer(self).analyze(memory)
 
 
 class Symbol(object):
@@ -35,20 +35,20 @@ class Symbol(object):
         self.weak      = weak
 
 
-class SymbolGenerator(object):
+class SymbolCreatingAnalyzer(object):
     """Given a SymbolTable and Memory, analyze the code and then populate
     the symbol table with weak symbols for code and data."""
 
     def __init__(self, symbol_table):
         self._symbol_table = symbol_table
 
-    def generate(self, memory):
-        self._generate_entry_point_symbols(memory)
-        self._generate_code_symbols(memory)
-        self._generate_data_symbols(memory)
+    def analyze(self, memory):
+        self._analyze_entry_point_symbols(memory)
+        self._analyze_code_symbols(memory)
+        self._analyze_data_symbols(memory)
 
-    def _generate_entry_point_symbols(self, memory):
-        """Generate symbols for addresses known to contain code but are
+    def _analyze_entry_point_symbols(self, memory):
+        """analyze symbols for addresses known to contain code but are
         not the targets of jump or call instructions."""
         for address, inst in memory.iter_instructions():
             if not self._can_set_symbol(address):
@@ -56,8 +56,8 @@ class SymbolGenerator(object):
             if memory.is_entry_point(address):
                 self._set_weak_symbol(address, _Prefixes.Label)
 
-    def _generate_code_symbols(self, memory):
-        """Generate symbols for jump and call targets."""
+    def _analyze_code_symbols(self, memory):
+        """analyze symbols for jump and call targets."""
         for address, inst in memory.iter_instructions():
             if not self._can_set_symbol(address):
                 continue
@@ -68,8 +68,8 @@ class SymbolGenerator(object):
             elif memory.is_jump_target(address):
                 self._set_weak_symbol(address, _Prefixes.Label)
 
-    def _generate_data_symbols(self, memory):
-        """Generate symbols for memory used in data operations."""
+    def _analyze_data_symbols(self, memory):
+        """analyze symbols for memory used in data operations."""
         for _, inst in memory.iter_instructions():
             address = inst.data_ref_address
             if address is None:

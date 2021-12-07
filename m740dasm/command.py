@@ -43,7 +43,7 @@ def main():
     tracer.trace(disassemble)
 
     symbol_table = SymbolTable(M3886_SYMBOLS)
-    symbol_table.generate_symbols(memory)
+    symbol_table.analyze_symbols(memory)
 
     printer = Printer(memory,
                       start_address,
