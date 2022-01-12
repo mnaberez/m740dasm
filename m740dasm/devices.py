@@ -2,6 +2,100 @@ from m740dasm.symbols import Symbol
 
 Devices={}
 
+# "7451 Group" (e.g. M37451)
+Devices["7451"]={"vector_table":
+    [ # Interrupt vector table - "7451 Group"
+        0xffe0, # BRK instruction
+        0xffe2, # A-D conversion completion
+        0xffe4, # Serial I/O transmit
+        0xffe6, # Serial I/O receive
+        0xffe8, # EV3 (External event)
+        0xffea, # EV2 (External event)
+        0xffec, # EV1 (External event)
+        0xffee, # Timer 3
+        0xfff0, # Timer 2
+        0xfff2, # Timer 1
+        0xfff4, # INT3 (External interrupt)
+        0xfff6, # INT2 (External interrupt)
+        0xfff8, # INT1 (External interrupt)
+        0xfffa, # Output buffer full
+        0xfffc, # Input buffer full
+        0xfffe, # RESET
+    ],
+    "symbol_table":
+    [ # Symbol Table - "7451 Group"
+        # I/O
+        Symbol(0x00d0, "P0",      "Port P0"),
+        Symbol(0x00d1, "P0D",     "Port P0 directional register"),
+        Symbol(0x00d2, "P1",      "Port P1"),
+        Symbol(0x00d3, "P1D",     "Port P1 directional register"),
+        Symbol(0x00d4, "P2",      "Port P2"),
+        Symbol(0x00d5, "P2D",     "Port P2 directional register"),
+        Symbol(0x00d6, "P3",      "Port P3"),
+        Symbol(0x00d7, "P3D",     "Port P3 directional register"),
+        Symbol(0x00d8, "P4",      "Port P4 / PWM prescaler latch"),
+        Symbol(0x00d9, "AFD",     "Additional function register"),
+        Symbol(0x00da, "P5",      "Port P5"),
+        Symbol(0x00db, "P5D",     "Port P5 directional register"),
+        Symbol(0x00dc, "P6",      "Port P6"),
+        Symbol(0x00dd, "P6D",     "Port P6 directional register"),
+        Symbol(0x00de, "MISRG1",  "Miscellaneous register 1"),
+        Symbol(0x00df, "MISRG2",  "Miscellaneous register 2"),
+        Symbol(0x00e0, "DA1",     "D-A1 conversion register"),
+        Symbol(0x00e1, "DA2",     "D-A2 conversion register"),
+        Symbol(0x00e2, "AD",      "A-D conversion register"),
+        Symbol(0x00e3, "ADCNT",   "A-D control register"),
+        Symbol(0x00e4, "DBB",     "Data bus buffer register"),
+        Symbol(0x00e5, "DBBSTS",  "Data bus buffer status register"),
+        Symbol(0x00e6, "RTB",     "Receive/Transmit buffer register"),
+        Symbol(0x00e7, "SIOSTS",  "Serial I/O status register"),
+        Symbol(0x00e8, "SIOCON",  "Serial I/O control register"),
+        Symbol(0x00e9, "UARTCON", "UART control register"),
+        Symbol(0x00ea, "BRG",     "Baud rate generator"),
+        Symbol(0x00eb, "PWML",    "PWM register (low-order)"),
+        Symbol(0x00ec, "PWMH",    "PWM register (high-order)"),
+        Symbol(0x00ed, "T1CON",   "Timer 1 control register"),
+        Symbol(0x00ee, "T2CON",   "Timer 2 control register"),
+        Symbol(0x00ef, "T3CON",   "Timer 3 control register"),
+        Symbol(0x00f0, "T1L",     "Timer 1 register (low-order)"),
+        Symbol(0x00f1, "T1H",     "Timer 1 register (high-order)"),
+        Symbol(0x00f2, "T1LATL",  "Timer 1 latch (low-order)"),
+        Symbol(0x00f3, "T1LATH",  "Timer 1 latch (high-order)"),
+        Symbol(0x00f4, "T2L",     "Timer 2 register (low-order)"),
+        Symbol(0x00f5, "T2H",     "Timer 2 register (high-order)"),
+        Symbol(0x00f6, "T2LATL",  "Timer 2 latch (low-order)"),
+        Symbol(0x00f7, "T2LATH",  "Timer 2 latch (high-order)"),
+        Symbol(0x00f8, "T3L",     "Timer 3 register (low-order)"),
+        Symbol(0x00f9, "T3H",     "Timer 3 register (high-order)"),
+        Symbol(0x00fa, "T3LATL",  "Timer 3 latch (low-order)"),
+        Symbol(0x00fb, "T3LATH",  "Timer 3 latch (high-order)"),
+        Symbol(0x00fc, "IREQ1",   "Interrupt request register 1"),
+        Symbol(0x00fd, "IREQ2",   "Interrupt request register 2"),
+        Symbol(0x00fe, "ICON1",   "Interrupt control register 1"),
+        Symbol(0x00ff, "ICON2",   "Interrupt control register 2"),
+
+        # vectors
+        Symbol(0xfffe, "RESET",           "Reset vector"),
+        Symbol(0xfffc, "INT_FFFC_IBF",    "Input buffer full (IBF)"),
+        Symbol(0xfffa, "INT_FFFA_OBE",    "Output buffer empty (OBE)"),
+        Symbol(0xfff8, "INT_FFF8_INT1",   "INT1 (External interrupt 1)"),
+        Symbol(0xfff6, "INT_FFF6_INT2",   "INT2 (External interrupt 2)"),
+        Symbol(0xfff4, "INT_FFF4_INT3",   "INT3 (External interrupt 3)"),
+        Symbol(0xfff2, "INT_FFF2_TIMER1", "Timer 1"),
+        Symbol(0xfff0, "INT_FFF0_TIMER2", "Timer 2"),
+        Symbol(0xffee, "INT_FFEE_TIMER3", "Timer 3"),
+        Symbol(0xffec, "INT_FFEC_EVENT1", "EV1 (External event 1)"),
+        Symbol(0xffea, "INT_FFEA_EVENT2", "EV2 (External event 2)"),
+        Symbol(0xffe8, "INT_FFE8_EVENT3", "EV3 (External event 3)"),
+        Symbol(0xffe6, "INT_FFE6_SIORX",  "Serial I/O receive"),
+        Symbol(0xffe4, "INT_FFE4_SIOTX",  "Serial I/O transmit"),
+        Symbol(0xffe2, "INT_FFE2_ADC",    "A-D conversion completion"),
+        Symbol(0xffe0, "INT_BRK",         "BRK instruction"),
+    ]
+}
+# Add an "alias" for M37451
+Devices["M37451"]=Devices["7451"];
+
 # M3886
 Devices["M3886"]={"vector_table":
     [ # Vector table - M3886
