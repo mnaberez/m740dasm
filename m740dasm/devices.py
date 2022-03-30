@@ -1,10 +1,10 @@
 from m740dasm.symbols import Symbol
 
-Devices={}
+Devices = {}
 
-# "7451 Group" (e.g. M37451)
-Devices["7451"]={"vector_table":
-    [ # Interrupt vector table - "7451 Group"
+# "7450 Group" (e.g. M37450)
+Devices["7450"] = {"vector_table":
+    [ # Interrupt vector table - "7450 Group"
         0xffe0, # BRK instruction
         0xffe2, # A-D conversion completion
         0xffe4, # Serial I/O transmit
@@ -23,7 +23,7 @@ Devices["7451"]={"vector_table":
         0xfffe, # RESET
     ],
     "symbol_table":
-    [ # Symbol Table - "7451 Group"
+    [ # Symbol Table - "7450 Group"
         # I/O
         Symbol(0x00d0, "P0",      "Port P0"),
         Symbol(0x00d1, "P0D",     "Port P0 directional register"),
@@ -33,8 +33,8 @@ Devices["7451"]={"vector_table":
         Symbol(0x00d5, "P2D",     "Port P2 directional register"),
         Symbol(0x00d6, "P3",      "Port P3"),
         Symbol(0x00d7, "P3D",     "Port P3 directional register"),
-        Symbol(0x00d8, "P4",      "Port P4 / PWM prescaler latch"),
-        Symbol(0x00d9, "AFD",     "Additional function register"),
+        Symbol(0x00d8, "P4",      "Port P4"),
+        Symbol(0x00d9, "RESERV",  "Reserved"),
         Symbol(0x00da, "P5",      "Port P5"),
         Symbol(0x00db, "P5D",     "Port P5 directional register"),
         Symbol(0x00dc, "P6",      "Port P6"),
@@ -89,15 +89,23 @@ Devices["7451"]={"vector_table":
         Symbol(0xffe8, "INT_FFE8_EVENT3", "EV3 (External event 3)"),
         Symbol(0xffe6, "INT_FFE6_SIORX",  "Serial I/O receive"),
         Symbol(0xffe4, "INT_FFE4_SIOTX",  "Serial I/O transmit"),
-        Symbol(0xffe2, "INT_FFE2_ADC",    "A-D conversion completion"),
+        Symbol(0xffe2, "INT_FFE2_ADC",    "A-D conversion completion flag"),
         Symbol(0xffe0, "INT_BRK",         "BRK instruction"),
     ]
 }
+# Add an "alias" for M37450
+Devices["M37450"] = Devices["7450"]
+
+# "7451 Group" (e.g. M37451)
+Devices["7451"] = Devices["7450"].copy()
+Devices["7451"]["symbol_table"] = Devices["7450"]["symbol_table"][:]
+Devices["7451"]["symbol_table"][8] = Symbol(0x00d8, "P4",      "Port P4 / PWM prescaler latch")
+Devices["7451"]["symbol_table"][9] = Symbol(0x00d9, "AFD",     "Additional function register")
 # Add an "alias" for M37451
-Devices["M37451"]=Devices["7451"];
+Devices["M37451"] = Devices["7451"]
 
 # M3886
-Devices["M3886"]={"vector_table":
+Devices["M3886"] = {"vector_table":
     [ # Vector table - M3886
         # brk
         0xffdc,
