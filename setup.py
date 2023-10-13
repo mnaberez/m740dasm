@@ -3,8 +3,8 @@ __version__ = '1.0.0.dev0'
 import sys
 from setuptools import setup, find_packages
 
-if sys.version_info[:2] < (3, 4):
-    raise RuntimeError('m740dasm requires Python 3.4 or later')
+if sys.version_info[:2] < (3, 6):
+    raise RuntimeError('m740dasm requires Python 3.6 or later')
 
 DESC = "Renesas (Mitsubishi) 740 disassembler"
 
