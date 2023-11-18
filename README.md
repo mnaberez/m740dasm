@@ -29,6 +29,8 @@ m740dasm is written in Python and requires Python 3.4 or later.  You can
 download the package from this git repository and then install it with:
 
 ```
+$ pip install setuptools
+
 $ python setup.py install
 ```
 
