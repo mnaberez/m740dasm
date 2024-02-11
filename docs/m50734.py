@@ -1,5 +1,5 @@
 # Special Function Registers for 50734 Group
-# Source: https://archive.org/details/bitsavers_mitsubishiishiSingleChip8BitMicrocomputers_54200624 Page 667-715
+# Source: https://archive.org/details/bitsavers_mitsubishiishiSingleChip8BitMicrocomputers_54200624
 
 sfrs = {
 
