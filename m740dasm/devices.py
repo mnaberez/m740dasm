@@ -269,5 +269,5 @@ Devices["50734"] = {"vector_table":
 
     ]
 }
-# Add an "alias" for M37450
+# Add an "alias" for M50734
 Devices["M50734"] = Devices["50734"]
