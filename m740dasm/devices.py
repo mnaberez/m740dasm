@@ -206,3 +206,68 @@ Devices["M3886"] = {"vector_table":
     ]
 
 }
+# "50734" (e.g. M50734)
+# Source: https://archive.org/details/bitsavers_mitsubishiishiSingleChip8BitMicrocomputers_54200624
+Devices["50734"] = {"vector_table":
+    [ # Interrupt vector table - "50734 Group"
+        0xfff4, # TX, CNTR, or BRK
+        0xfff6, # HE or VE
+        0xfff8, # Timer1, Timer2, or Timer3
+        0xfffa, # RI or INT1
+        0xfffc, # INT2
+        0xfffe, # RESET
+    ],
+    "symbol_table":
+    [ # Symbol Table - "50734 Group"
+        # I/O
+        Symbol(0x00da, "TXL",       "Timer X (lower byte)"),
+        Symbol(0x00db, "TXH",       "Timer X (higher byte)"),
+        Symbol(0x00dc, "PRE1",      "Prescaler 1"),
+        Symbol(0x00dd, "T1",        "Timer 1"),
+        Symbol(0x00de, "PRE2",      "Prescaler 2"),
+        Symbol(0x00df, "T2",        "Timer 2"),
+        Symbol(0x00e0, "PRE3",      "Prescaler 3"),
+        Symbol(0x00e1, "T3",        "Timer 3"),
+        Symbol(0x00e2, "HCNT",      "Horizontal counter"),
+        Symbol(0x00e3, "VCNT",      "Vertical counter"),
+        Symbol(0x00e4, "TSR",       "Transmit shift register"),
+        Symbol(0x00e5, "RBR",       "Receive buffer register"),
+        Symbol(0x00e6, "UCON",      "UART control register"),
+        Symbol(0x00e7, "USR",       "UART status register"),
+        Symbol(0x00e8, "SIO",       "Serial I/O register"),
+        Symbol(0x00e9, "ADCON",     "A-D control register"),
+        Symbol(0x00ea, "ADR",       "A-D register"),
+        Symbol(0x00eb, "P4IN",      "Port P4 input"),
+        Symbol(0x00ec, "PHASECNT",  "Vertical + Horizontal phase counter"),
+        Symbol(0x00ed, "P2P3FUNC",  "Port P2 P3 function register"),
+        Symbol(0x00ee, "P3",        "Port P3"),
+        Symbol(0x00ef, "P3DIR",     "Port P3 directional register"),
+        Symbol(0x00f0, "P2",        "Port P2"),
+        Symbol(0x00f1, "P2DIR",     "Port P2 directional register"),
+        Symbol(0x00f2, "P1IN",      "Port P1 latch input"),
+        Symbol(0x00f3, "P1",        "Port P1"),
+        Symbol(0x00f4, "P1DIR",     "Port P1 directional register"),
+        Symbol(0x00f5, "P0FUNC",    "Port P0 function register"),
+        Symbol(0x00f6, "P0",        "Port P0"),
+        Symbol(0x00f7, "P0DIR",     "Port P0 directional register"),
+        Symbol(0x00f8, "SMCONH",    "Stepper motor control register H"),
+        Symbol(0x00f9, "SMCONV",    "Stepper motor control register V"),
+        Symbol(0x00fa, "STBT",      "Strobe timer (Timer S)"),
+        Symbol(0x00fb, "BRGTB",     "Baud rate generator (Timer B)"),
+        Symbol(0x00fc, "WDT",       "Watchdog timer (Timer W)"),
+        Symbol(0x00fd, "ICON3",     "Interrupt control register 3"),
+        Symbol(0x00fe, "ICON2",     "Interrupt control register 2"),
+        Symbol(0x00ff, "ICON1",     "Interrupt control register 1"),
+
+        # vectors
+        Symbol(0xfffe, "RESET",                 "Reset vector"),
+        Symbol(0xfffc, "INT_FFFC_INT2",         "INT2 (External interrupt 2)"),
+        Symbol(0xfffa, "INT_FFFA_RI_INT1",      "RI or INT1"),
+        Symbol(0xfff8, "INT_FFF8_T1T2T3",       "Timer1, Timer2, or Timer3"),
+        Symbol(0xfff6, "INT_FFF6_HEVE",         "HE or VE"),
+        Symbol(0xfff4, "INT_FFF4_TXCNTRBRK",    "TX, CNTR, or BRK"),
+
+    ]
+}
+# Add an "alias" for M37450
+Devices["M50734"] = Devices["50734"]
