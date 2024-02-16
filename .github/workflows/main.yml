@@ -19,8 +19,8 @@ jobs:
 
     - name: Install asxxxx
       run: |
-        wget --no-verbose https://github.com/6502org/6502.org/raw/74f5d0c0f9b73d5e353bde7b3b25ea7f43b527a1/public/tools/asm/asxs5p50.zip
-        unzip -q asxs5p50.zip
+        wget --no-verbose https://github.com/6502org/6502.org/raw/9715381985a20009df3b2745ff8ad3753cab6093/public/tools/asm/asxs5p50_20240216.zip
+        unzip -q asxs5p50_20240216.zip
         make -C asxv5pxx/asxmak/linux/build all
         echo "$PWD/asxv5pxx/asxmak/linux/build" >> $GITHUB_PATH
 
@@ -62,8 +62,8 @@ jobs:
 
     - name: Install asxxxx
       run: |
-        wget --no-verbose https://github.com/6502org/6502.org/raw/74f5d0c0f9b73d5e353bde7b3b25ea7f43b527a1/public/tools/asm/asxs5p50.zip
-        unzip -q asxs5p50.zip
+        wget --no-verbose https://github.com/6502org/6502.org/raw/9715381985a20009df3b2745ff8ad3753cab6093/public/tools/asm/asxs5p50_20240216.zip
+        unzip -q asxs5p50_20240216.zip
         make -C asxv5pxx/asxmak/linux/build all
         echo "$PWD/asxv5pxx/asxmak/linux/build" >> $GITHUB_PATH
 
@@ -106,8 +106,8 @@ jobs:
 
     - name: Install asxxxx
       run: |
-        wget --no-verbose https://github.com/6502org/6502.org/raw/74f5d0c0f9b73d5e353bde7b3b25ea7f43b527a1/public/tools/asm/asxs5p50.zip
-        unzip -q asxs5p50.zip
+        wget --no-verbose https://github.com/6502org/6502.org/raw/9715381985a20009df3b2745ff8ad3753cab6093/public/tools/asm/asxs5p50_20240216.zip
+        unzip -q asxs5p50_20240216.zip
         make -C asxv5pxx/asxmak/linux/build all
         echo "$PWD/asxv5pxx/asxmak/linux/build" >> $GITHUB_PATH
 
