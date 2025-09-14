@@ -3,8 +3,8 @@ __version__ = '1.0.0.dev0'
 import sys
 from setuptools import setup, find_packages
 
-if sys.version_info[:2] < (3, 4):
-    raise RuntimeError('m740dasm requires Python 3.4 or later')
+if sys.version_info[:2] < (3, 8):
+    raise RuntimeError('m740dasm requires Python 3.8 or later')
 
 DESC = "Renesas (Mitsubishi) 740 disassembler"
 
@@ -16,10 +16,7 @@ CLASSIFIERS = [
     'Operating System :: POSIX',
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.4',
-    'Programming Language :: Python :: 3.5',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3 :: Only',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
@@ -46,7 +43,6 @@ setup(
     packages=find_packages(),
     install_requires=[],
     extras_require={},
-    tests_require=[],
     include_package_data=True,
     zip_safe=False,
     test_suite="m740dasm.tests",
