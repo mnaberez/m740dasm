@@ -1,4 +1,3 @@
-import sys
 import unittest
 from m740dasm.disasm import disassemble
 from m740dasm.tables import AddressModes
@@ -2553,10 +2552,3 @@ class disassemble_tests(unittest.TestCase):
         self.assertEqual(inst.addr_mode, AddressModes.ZeroPageBit)
         self.assertEqual(inst.data_ref_address, 0x00aa)
         self.assertEqual(inst.code_ref_address, None)
-
-
-def test_suite():
-    return unittest.findTestCases(sys.modules[__name__])
-
-if __name__ == '__main__':
-    unittest.main(defaultTest='test_suite')
