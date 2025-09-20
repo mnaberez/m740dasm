@@ -36,14 +36,11 @@ jobs:
     - name: Show Python version
       run: python -V
 
-    - name: Install dependencies
-      run: $PIP install setuptools pytest
+    - name: Install the package and its dependencies for testing
+      run: $PIP install '.[test]'
 
     - name: Run the tests
       run: pytest
-
-    - name: Install it
-      run: python setup.py install
 
     - name: Disassemble and reassemble the test program
       run: |
