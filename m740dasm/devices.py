@@ -205,6 +205,89 @@ Devices["M3886"] = {"vector_table":
         Symbol(0xffdc, "INT_BRK",   "BRK instruction interrupt"),
     ]
 }
+# "3802 Group" (e.g. M38027)
+# Source: https://www.renesas.com/en/document/dst/3802-group-datasheet
+Devices["M3802"] = {"vector_table":
+    [ # Vector table - M3802
+        # brk
+        0xffdc,
+        # interrupts
+        0xffde, 0xffe0, 0xffe2, 0xffe4, 0xffe6, 0xffe8, 0xffea, 0xffec,
+        0xffee, 0xfff0, 0xfff2, 0xfff4, 0xfff6, 0xfff8, 0xfffa,
+        # reset
+        0xfffc,
+    ],
+    "symbol_table":
+    [ # Symbol Table - M3802
+        # i/o
+        Symbol(0x0000, "P0",        "Port P0"),
+        Symbol(0x0001, "P0D",       "Port P0 direction register"),
+        Symbol(0x0002, "P1",        "Port P1"),
+        Symbol(0x0003, "P1D",       "Port P1 direction register"),
+        Symbol(0x0004, "P2",        "Port P2"),
+        Symbol(0x0005, "P2D",       "Port P2 direction register"),
+        Symbol(0x0006, "P3",        "Port P3"),
+        Symbol(0x0007, "P3D",       "Port P3 direction register"),
+        Symbol(0x0008, "P4",        "Port P4"),
+        Symbol(0x0009, "P4D",       "Port P4 direction register"),
+        Symbol(0x000a, "P5",        "Port P5"),
+        Symbol(0x000b, "P5D",       "Port P5 direction register"),
+        Symbol(0x000c, "P6",        "Port P6"),
+        Symbol(0x000d, "P6D",       "Port P6 direction register"),
+        # symbols 0x000e - 0x0017 are unused
+        Symbol(0x0018, "TB_RB",     "Transmit/Receive buffer register"),
+        Symbol(0x0019, "SIO1STS",   "Serial I/O1 status register"),
+        Symbol(0x001a, "SIO1CON",   "Serial I/O1 control register"),
+        Symbol(0x001b, "UARTCON",   "UART control register"),
+        Symbol(0x001c, "BRG",       "Baud rate generator"),
+        Symbol(0x001d, "SIO2CON",   "Serial I/O2 control register"),
+        # symbol 0x001e is unused
+        Symbol(0x001f, "SIO2",      "Serial I/O2 register"),
+        Symbol(0x0020, "PRE12",     "Prescaler 12"),
+        Symbol(0x0021, "T1",        "Timer 1"),
+        Symbol(0x0022, "T2",        "Timer 2"),
+        Symbol(0x0023, "TM",        "Timer XY mode register"),
+        Symbol(0x0024, "PREX",      "Prescaler X"),
+        Symbol(0x0025, "TX",        "Timer X"),
+        Symbol(0x0026, "PREY",      "Prescaler Y"),
+        Symbol(0x0027, "TY",        "Timer Y"),
+        # symbols 0x0028 - 0x002a are unused
+        Symbol(0x002b, "PWMCON",    "PWM control register"),
+        Symbol(0x002c, "PREPWM",    "PWM prescaler"),
+        Symbol(0x002d, "PWM",       "PWM register"),
+        # symbols 0x002e - 0x0033 are unused
+        Symbol(0x0034, "ADCON",     "AD/DA control register"),
+        Symbol(0x0035, "AD",        "A-D conversion register"),
+        Symbol(0x0036, "DA1",       "D-A1 conversion register"),
+        Symbol(0x0037, "DA2",       "D-A2 conversion register"),
+        # symbols 0x0038 - 0x0039 are unused
+        Symbol(0x003a, "INTEDGE",   "Interrupt edge selection register"),
+        Symbol(0x003b, "CPUM",      "CPU mode register"),
+        Symbol(0x003c, "IREQ1",     "Interrupt request register 1"),
+        Symbol(0x003d, "IREQ2",     "Interrupt request register 2"),
+        Symbol(0x003e, "ICON1",     "Interrupt control register 1"),
+        Symbol(0x003f, "ICON2",     "Interrupt control register 2"),
+
+        # vectors
+        Symbol(0xfffc, "RESET",     "Reset vector"),
+        Symbol(0xfffa, "INT_FFFA",  "INT0"),
+        Symbol(0xfff8, "INT_FFF8",  "INT1"),
+        Symbol(0xfff6, "INT_FFF6",  "Serial I/O 1 reception"),
+        Symbol(0xfff4, "INT_FFF4",  "Serial I/O 1 transmission"),
+        Symbol(0xfff2, "INT_FFF2",  "Timer X"),
+        Symbol(0xfff0, "INT_FFF0",  "Timer Y"),
+        Symbol(0xffee, "INT_FFEE",  "Timer 1"),
+        Symbol(0xffec, "INT_FFEC",  "Timer 2"),
+        Symbol(0xffea, "INT_FFEA",  "CNTR0"),
+        Symbol(0xffe8, "INT_FFE8",  "CNTR1"),
+        Symbol(0xffe6, "INT_FFE6",  "Serial I/O 2"),
+        Symbol(0xffe4, "INT_FFE4",  "INT2"),
+        Symbol(0xffe2, "INT_FFE2",  "INT3"),
+        Symbol(0xffe0, "INT_FFE0",  "INT4"),
+        Symbol(0xffde, "INT_FFDE",  "A-D converter"),
+        Symbol(0xffdc, "INT_BRK",   "BRK instruction interrupt"),
+    ]
+}
 # "3807 Group" (e.g. M38078)
 # Source: https://www.renesas.com/en/document/dst/3807-group-datasheet
 Devices["M3807"] = {"vector_table":
