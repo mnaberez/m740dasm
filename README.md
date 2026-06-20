@@ -42,6 +42,10 @@ Most binaries will include some computed jumps, which m740dasm can't resolve on 
 
 Once disassembled, the output file can be re-assembled to an identical binary using [as740](http://shop-pdp.net/ashtml/as740.htm).  A sample [`Makefile`](https://github.com/mnaberez/m740dasm/blob/bbf8d3f541e28c48cb05fe2fa6acc8fd8e1304fa/m740dasm/tests/end_to_end/Makefile) is included in this repository that shows the required as740 commands.
 
+## Related
+
+Keith Monahan's [m740recon](https://github.com/keithgh1/m740recon) is a friendly fork of m740dasm that adds many more features such as more device definitions, a confguration file, data flow analysis, and call graph plotting.
+
 ## Author
 
 [Mike Naberezny](https://github.com/mnaberez)
