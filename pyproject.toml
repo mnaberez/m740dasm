@@ -41,10 +41,5 @@ classifiers = [
 ]
 dependencies = []
 
-[project.optional-dependencies]
-test = [
-    "pytest"
-]
-
 [project.scripts]
 m740dasm = "m740dasm.command:main"

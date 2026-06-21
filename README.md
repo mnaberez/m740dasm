@@ -22,7 +22,7 @@ m740dasm is written in Python and requires Python 3.8 or later.  You can downloa
 $ git clone https://github.com/mnaberez/m740dasm.git
 $ cd m740dasm
 $ python3 -m venv ./venv
-$ ./venv/bin/pip3 install --editable '.[test]'
+$ ./venv/bin/pip3 install --editable .
 ```
 
 After running the above, you can run the disassembler with `./venv/bin/m740dasm`

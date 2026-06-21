@@ -36,11 +36,11 @@ jobs:
     - name: Show Python version
       run: python -V
 
-    - name: Install the package and its dependencies for testing
-      run: $PIP install '.[test]'
+    - name: Install the package
+      run: $PIP install .
 
     - name: Run the tests
-      run: pytest
+      run: python -m unittest discover m740dasm.tests
 
     - name: Disassemble and reassemble the test program
       run: |
