@@ -44,7 +44,7 @@ Once disassembled, the output file can be re-assembled to an identical binary us
 
 ## Related
 
-Keith Monahan's [m740recon](https://github.com/keithgh1/m740recon) is a friendly fork of m740dasm that adds many more features such as more device definitions, a confguration file, data flow analysis, and call graph plotting.
+Keith Monahan's [m740recon](https://github.com/keithgh1/m740recon) is a friendly fork of m740dasm that adds many more features such as more device definitions, a configuration file, data flow analysis, and call graph plotting.
 
 ## Author
 
